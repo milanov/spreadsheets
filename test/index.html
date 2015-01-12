@@ -7,9 +7,12 @@
 </head>
 <body>
     <div id="mocha"></div>
+    <div id="test"></div>
+
     <script src="bower_components/mocha/mocha.js"></script>
     <script>mocha.setup('bdd')</script>
     <script src="bower_components/chai/chai.js"></script>
+    <script src="node_modules/chai-things/lib/chai-things.js"></script>
     <script>
         var assert = chai.assert;
         var expect = chai.expect;
@@ -17,9 +20,13 @@
     </script>
 
     <!-- include source files here... -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+
+    <script src="scripts/gui.js"></script>
 
     <!-- include spec files here... -->
     <script src="spec/test.js"></script>
+    <script src="spec/gui-spec.js"></script>
 
     <script>mocha.run()</script>
 </body>
