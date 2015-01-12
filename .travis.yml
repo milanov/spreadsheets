@@ -3,7 +3,10 @@ node_js:
   - "0.10"
 before_script:
   - npm install -g bower
+  - npm install -g grunt
   - bower install
+  - cd test
+  - npm install && bower install
 script:
   # Run tests for JavaScript
   - grunt test
