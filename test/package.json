@@ -1,0 +1,6 @@
+{
+  "name": "spreadsheets",
+  "dependencies": {
+    "chai-things": "^0.2.0"
+  }
+}
