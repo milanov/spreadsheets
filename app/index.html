@@ -11,6 +11,7 @@
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -25,15 +26,43 @@
 
     <header>
       <div class="dropdown">
-        <a class="btn btn-small dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">Dropdown</a>
+        <div class="btn-group"><a class="btn btn-small">File</a></div>
+        <div class="btn-group">
+        <a class="btn btn-small dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">Edit&nbsp;<i class="fa fa-caret-down"></i></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+          <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">
+              <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Undo
+            </a>
+          </li>
+          <li>
+            <a role="menuitem" tabindex="-1" href="#">
+              <i class="fa fa-arrow-right"></i>&nbsp;&nbsp;Redo
+            </a>
+          </li>
+          <li role="presentation" class="divider"></li>
+          <li>
+            <a role="menuitem" tabindex="-1" href="#">
+              <i class="fa fa-scissors"></i>&nbsp;&nbsp;Cut
+            </a>
+          </li>
+          <li>
+            <a role="menuitem" tabindex="-1" href="#">
+              <i class="fa fa-files-o"></i>&nbsp;&nbsp;Copy
+            </a>
+          </li>
+          <li>
+            <a role="menuitem" tabindex="-1" href="#">
+              <i class="fa fa-clipboard"></i>&nbsp;&nbsp;Paste
+            </a>
+          </li>
         </ul>
       </div>
+    </div>
 
       <nav class="navbar navbar-default">
         <a href="#" class="btn btn-small navbar-btn">
-          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+          <i class="fa fa-search"></i>
         </a>
       </nav>
 
@@ -51,8 +80,8 @@
     <!-- endbuild -->
 
     <!-- build:js({app,.tmp}) scripts/main.js -->
-    <script type="text/javascript" src="scripts/gui.js"></script>
-    <script type="text/javascript" src="scripts/main.js"></script>
+    <script src="scripts/gui.js"></script>
+    <script src="scripts/main.js"></script>
     <!-- endbuild -->
 </body>
 </html>

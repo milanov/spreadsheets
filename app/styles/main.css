@@ -14,4 +14,12 @@ body { position: relative; padding-top: 108px; }
 header { position: fixed; top: 0; left: 0; width: 100%; background: #fff;}
 
 header .dropdown, header .navbar { padding-left: 30px; margin-bottom: 0px; border-radius: 0; }
+header .dropdown .dropdown-menu {
+	box-shadow: 0;
+	-webkit-box-shadow: 0;
+	-moz-box-shadow: 0;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+}
 header .formula-bar { border: 1px solid #e7e7e7; border-top: none; width: 100%; }
