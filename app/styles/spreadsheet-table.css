@@ -1,34 +1,25 @@
-input {
+.spreadsheet input {
     border: none;
-    width: 80px;
-    font-size: 14px;
+    width: 100%;
     padding: 2px;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    height: 25px;
 }
 
-input:hover {
-    background-color: #eee;
+.spreadsheet input:focus {
+    border: 2px solid #4285F4;
 }
 
-input:focus {
-    background-color: #ccf;
-}
-
-input:not(:focus) {
+.spreadsheet input:not(:focus) {
     text-align: right;
 }
 
-table {
-    border-collapse: collapse;
-}
+.spreadsheet > tbody > tr > td { padding: 2px; text-align: center; background-color: #F3F3F3; }
 
-td {
-    border: 1px solid #999;
-    padding: 0;
-}
+/* Target all table's cells except the first row */ 
+.spreadsheet tr:not(:first-child) td { padding: 0; text-align: center; }
 
-tr:first-child td, td:first-child {
-    background-color: #ccc;
-    padding: 1px 3px;
-    font-weight: bold;
-    text-align: center;
-}
+/* Target table's first column */
+.spreadsheet > tbody > tr:first-child > td:first-child { width: 40px; }

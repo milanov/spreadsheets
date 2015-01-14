@@ -2,6 +2,7 @@
   "name": "spreadsheets",
   "private": true,
   "dependencies": {
-    "jquery": "~1.11.1"
+    "jquery": "~1.11.1",
+    "bootstrap": "~3.3.1"
   }
 }

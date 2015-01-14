@@ -1,29 +1,17 @@
-body {
-  background: #fafafa;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #333;
-}
-
-.hero-unit {
-  margin: 50px auto 0 auto;
-  width: 300px;
-  font-size: 18px;
-  font-weight: 200;
-  line-height: 30px;
-  background-color: #eee;
-  border-radius: 6px;
-  padding: 60px;
-}
-
-.hero-unit h1 {
-  font-size: 60px;
-  line-height: 1;
-  letter-spacing: -1px;
-}
-
+/* Style the warning message for old IE browsers */
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
   color: #000;
   padding: 0.2em 0;
 }
+
+
+/* Tell body leave a gap at the top for the navigation when the page is scrolled to the top */
+body { position: relative; padding-top: 108px; }
+
+/* Fix header to the top */
+header { position: fixed; top: 0; left: 0; width: 100%; background: #fff;}
+
+header .dropdown, header .navbar { padding-left: 30px; margin-bottom: 0px; border-radius: 0; }
+header .formula-bar { border: 1px solid #e7e7e7; border-top: none; width: 100%; }

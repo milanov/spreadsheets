@@ -2,7 +2,7 @@
 function createSpreadsheet(holderElement, rows, cols) {
     'use strict';
 
-    var spreadsheetTable = '<table>';
+    var spreadsheetTable = '<table class="table table-bordered spreadsheet">';
     for (var i = 0; i <= rows; i++) {
         spreadsheetTable += '<tr>';
         for (var j = 0; j <= cols; j++) {
