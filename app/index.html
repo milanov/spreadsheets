@@ -12,6 +12,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-submenu/dist/css/bootstrap-submenu.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -28,37 +29,74 @@
       <div class="dropdown">
         <div class="btn-group"><a class="btn btn-small">File</a></div>
         <div class="btn-group">
-        <a class="btn btn-small dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">Edit&nbsp;<i class="fa fa-caret-down"></i></a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-          <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">
-              <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Undo
-            </a>
-          </li>
-          <li>
-            <a role="menuitem" tabindex="-1" href="#">
-              <i class="fa fa-arrow-right"></i>&nbsp;&nbsp;Redo
-            </a>
-          </li>
-          <li role="presentation" class="divider"></li>
-          <li>
-            <a role="menuitem" tabindex="-1" href="#">
-              <i class="fa fa-scissors"></i>&nbsp;&nbsp;Cut
-            </a>
-          </li>
-          <li>
-            <a role="menuitem" tabindex="-1" href="#">
-              <i class="fa fa-files-o"></i>&nbsp;&nbsp;Copy
-            </a>
-          </li>
-          <li>
-            <a role="menuitem" tabindex="-1" href="#">
-              <i class="fa fa-clipboard"></i>&nbsp;&nbsp;Paste
-            </a>
-          </li>
-        </ul>
+          <a class="btn btn-small dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">Edit&nbsp;<i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation">
+              <a role="menuitem" tabindex="-1" href="#">
+                <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Undo
+              </a>
+            </li>
+            <li>
+              <a role="menuitem" tabindex="-1" href="#">
+                <i class="fa fa-arrow-right"></i>&nbsp;&nbsp;Redo
+              </a>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li>
+              <a role="menuitem" tabindex="-1" href="#">
+                <i class="fa fa-scissors"></i>&nbsp;&nbsp;Cut
+              </a>
+            </li>
+            <li>
+              <a role="menuitem" tabindex="-1" href="#">
+                <i class="fa fa-files-o"></i>&nbsp;&nbsp;Copy
+              </a>
+            </li>
+            <li>
+              <a role="menuitem" tabindex="-1" href="#">
+                <i class="fa fa-clipboard"></i>&nbsp;&nbsp;Paste
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="btn-group"><a class="btn btn-small">View</a></div>
+        <div class="btn-group">
+          <a class="btn btn-small dropdown-toggle" id="insert-dropdown-menu" data-toggle="dropdown" aria-expanded="false">Insert&nbsp;<i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="insert-dropdown-menu">
+            <li role="presentation">
+              <a role="menuitem" tabindex="-1" href="#">Row <strong>above</strong></a>
+            </li>
+            <li>
+              <a role="menuitem" tabindex="-1" href="#">Row <strong>below</strong></a>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li>
+              <a role="menuitem" tabindex="-1" href="#">Column <strong>above</strong></a>
+            </li>
+            <li>
+              <a role="menuitem" tabindex="-1" href="#">Column <strong>below</strong></a>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li>
+              <a role="menuitem" tabindex="-1" href="#">New sheet</a>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li class="dropdown-submenu">
+              <a role="menuitem" tabindex="-1" href="#" data-toggle="dropdown">
+                <i class="fa fa-calculator"></i>&nbsp;&nbsp;Function
+              </a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">SUM</li>
+                <li class="dropdown-header">AVERAGE</li>
+                <li class="dropdown-header">COUNT</li>
+                <li class="dropdown-header">MAX</li>
+                <li class="dropdown-header">MIN</li>
+                <li class="dropdown-header">More...</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
 
       <nav class="navbar navbar-default">
         <a href="#" class="btn btn-small navbar-btn">
@@ -76,8 +114,10 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/bootstrap-submenu/dist/js/bootstrap-submenu.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
+    <script src="bower_components/NicEdit/nicEdit.js"></script>
 
     <!-- build:js({app,.tmp}) scripts/main.js -->
     <script src="scripts/gui.js"></script>
