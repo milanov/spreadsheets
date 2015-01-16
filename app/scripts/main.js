@@ -1,7 +1,12 @@
 $(function() {
     'use strict';
 
+    /* Activate Bootstrap's submenu plugin */
     $('.dropdown-submenu > a').submenupicker();
+
+    /* Manually calculate and set spreadsheet height, needed for the overflow scrolling functionality */
+    var calculatedSpreadsheetHeight = $(window).height() - $('header').height() - $('footer').height();
+    $('#spreadsheet-one').height(calculatedSpreadsheetHeight);
 
     var container = document.getElementById('spreadsheet-one');
     var hot = new Handsontable(container, {
