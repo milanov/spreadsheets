@@ -26,82 +26,300 @@
     <![endif]-->
 
     <header>
-      <div class="dropdown">
-        <div class="btn-group"><a class="btn btn-small">File</a></div>
-        <div class="btn-group">
-          <a class="btn btn-small dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">Edit&nbsp;<i class="fa fa-caret-down"></i></a>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            <li role="presentation">
-              <a role="menuitem" tabindex="-1" href="#">
-                <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Undo
-              </a>
+      <nav class="menu navbar navbar-default">
+        <div class="container-fluid">
+          <ul class="nav navbar-nav">
+            <li><a href="#">File</a></li>
+
+            <li class="dropdown">
+              <a class="dropdown-toggle" id="edit-dropdown-menu" data-toggle="dropdown" aria-expanded="false">Edit</a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="edit-dropdown-menu">
+                <li role="presentation">
+                  <a href="#">
+                    <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Undo
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-arrow-right"></i>&nbsp;&nbsp;Redo
+                  </a>
+                </li>
+                <li role="presentation" class="divider"></li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-scissors"></i>&nbsp;&nbsp;Cut
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-files-o"></i>&nbsp;&nbsp;Copy
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-clipboard"></i>&nbsp;&nbsp;Paste
+                  </a>
+                </li>
+              </ul>
             </li>
-            <li>
-              <a role="menuitem" tabindex="-1" href="#">
-                <i class="fa fa-arrow-right"></i>&nbsp;&nbsp;Redo
-              </a>
+
+            <li><a href="#">View</a></li>
+
+            <li class="dropdown">
+              <a class="dropdown-toggle" id="insert-dropdown-menu" data-toggle="dropdown" aria-expanded="false">Insert</a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="insert-dropdown-menu">
+                <li role="presentation">
+                  <a href="#">Row <strong>above</strong></a>
+                </li>
+                <li>
+                  <a href="#">Row <strong>below</strong></a>
+                </li>
+                <li role="presentation" class="divider"></li>
+                <li>
+                  <a href="#">Column <strong>above</strong></a>
+                </li>
+                <li>
+                  <a href="#">Column <strong>below</strong></a>
+                </li>
+                <li role="presentation" class="divider"></li>
+                <li>
+                  <a href="#">New sheet</a>
+                </li>
+                <li role="presentation" class="divider"></li>
+                <li class="dropdown-submenu">
+                  <a href="#" data-toggle="dropdown">
+                    <i class="fa fa-calculator"></i>&nbsp;&nbsp;Function
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-header">SUM</li>
+                    <li class="dropdown-header">AVERAGE</li>
+                    <li class="dropdown-header">COUNT</li>
+                    <li class="dropdown-header">MAX</li>
+                    <li class="dropdown-header">MIN</li>
+                    <li class="dropdown-header">More...</li>
+                  </ul>
+                </li>
+              </ul>
             </li>
-            <li role="presentation" class="divider"></li>
-            <li>
-              <a role="menuitem" tabindex="-1" href="#">
-                <i class="fa fa-scissors"></i>&nbsp;&nbsp;Cut
-              </a>
-            </li>
-            <li>
-              <a role="menuitem" tabindex="-1" href="#">
-                <i class="fa fa-files-o"></i>&nbsp;&nbsp;Copy
-              </a>
-            </li>
-            <li>
-              <a role="menuitem" tabindex="-1" href="#">
-                <i class="fa fa-clipboard"></i>&nbsp;&nbsp;Paste
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="btn-group"><a class="btn btn-small">View</a></div>
-        <div class="btn-group">
-          <a class="btn btn-small dropdown-toggle" id="insert-dropdown-menu" data-toggle="dropdown" aria-expanded="false">Insert&nbsp;<i class="fa fa-caret-down"></i></a>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="insert-dropdown-menu">
-            <li role="presentation">
-              <a role="menuitem" tabindex="-1" href="#">Row <strong>above</strong></a>
-            </li>
-            <li>
-              <a role="menuitem" tabindex="-1" href="#">Row <strong>below</strong></a>
-            </li>
-            <li role="presentation" class="divider"></li>
-            <li>
-              <a role="menuitem" tabindex="-1" href="#">Column <strong>above</strong></a>
-            </li>
-            <li>
-              <a role="menuitem" tabindex="-1" href="#">Column <strong>below</strong></a>
-            </li>
-            <li role="presentation" class="divider"></li>
-            <li>
-              <a role="menuitem" tabindex="-1" href="#">New sheet</a>
-            </li>
-            <li role="presentation" class="divider"></li>
-            <li class="dropdown-submenu">
-              <a role="menuitem" tabindex="-1" href="#" data-toggle="dropdown">
-                <i class="fa fa-calculator"></i>&nbsp;&nbsp;Function
-              </a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header">SUM</li>
-                <li class="dropdown-header">AVERAGE</li>
-                <li class="dropdown-header">COUNT</li>
-                <li class="dropdown-header">MAX</li>
-                <li class="dropdown-header">MIN</li>
-                <li class="dropdown-header">More...</li>
+
+            <li class="dropdown">
+              <a class="dropdown-toggle" id="format-dropdown-menu" data-toggle="dropdown" aria-expanded="false">Format</a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="format-dropdown-menu">
+                <li class="dropdown-submenu">
+                  <a href="#" data-toggle="dropdown">Number</a>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-header">Automatic</li>
+                    <li class="dropdown-header">Plain text</li>
+                    <li role="presentation" class="divider"></li>
+                    <li class="dropdown-header">Number</li>
+                    <li class="dropdown-header">Percent</li>
+                    <li class="dropdown-header">Scientific</li>
+                    <li role="presentation" class="divider"></li>
+                    <li class="dropdown-header">Financial</li>
+                    <li class="dropdown-header">Currency</li>
+                    <li role="presentation" class="divider"></li>
+                    <li class="dropdown-header">Date</li>
+                    <li class="dropdown-header">Time</li>
+                    <li class="dropdown-header">Date time</li>
+                    <li class="dropdown-header">Duration</li>
+                  </ul>
+                </li>
+                <li role="presentation" class="divider"></li>
+
+                <li class="dropdown-submenu">
+                  <a href="#" data-toggle="dropdown">Font</a>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-header"><a href="#">Arial</a></li>
+                    <li class="dropdown-header"><a href="#">Courier new</a></li>
+                    <li class="dropdown-header"><a href="#">Georgia</a></li>
+                    <li class="dropdown-header"><a href="#">Times New Roman</a></li>
+                    <li class="dropdown-header"><a href="#">Trebuchet MS</a></li>
+                    <li class="dropdown-header"><a href="#">Verdana</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown-submenu">
+                  <a href="#" data-toggle="dropdown">Font size</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">6</a></li>
+                    <li><a href="#">7</a></li>
+                    <li><a href="#">8</a></li>
+                    <li><a href="#">9</a></li>
+                    <li><a href="#">10</a></li>
+                    <li><a href="#">11</a></li>
+                    <li><a href="#">12</a></li>
+                    <li><a href="#">14</a></li>
+                    <li><a href="#">18</a></li>
+                    <li><a href="#">24</a></li>
+                    <li><a href="#">36</a></li>
+                  </ul>
+                </li>
+                <li role="presentation" class="divider"></li>
+
+                <li>
+                  <a href="#"><i class="fa fa-bold"></i>&nbsp;&nbsp;Bold</a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa fa-italic"></i>&nbsp;&nbsp;Italic</a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa fa-underline"></i>&nbsp;&nbsp;Underline</a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa fa-strikethrough"></i>&nbsp;&nbsp;Strikethrough</a>
+                </li>
+                <li role="presentation" class="divider"></li>
+
+                <li class="dropdown-submenu">
+                  <a href="#" data-toggle="dropdown">Align</a>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-header"><a href="#">Left</a></li>
+                    <li class="dropdown-header"><a href="#">Center</a></li>
+                    <li class="dropdown-header"><a href="#">Right</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li class="dropdown-header"><a href="#">Top</a></li>
+                    <li class="dropdown-header"><a href="#">Middle</a></li>
+                    <li class="dropdown-header"><a href="#">Bottom</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown-submenu">
+                  <a href="#" data-toggle="dropdown">Merge cells</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Merge all</a></li>
+                    <li><a href="#">Merge horizontally</a></li>
+                    <li><a href="#">Merge vertically</a></li>
+                    <li><a href="#">Unmerge</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#"><i class="fa fa-bars"></i>&nbsp;&nbsp;Wrap text</a>
+                </li>
+                <li role="presentation" class="divider"></li>
+
+                <li>
+                  <a href="#"><i class="fa fa-eraser"></i>&nbsp;&nbsp;Clear formatting</a>
+                </li>
               </ul>
             </li>
           </ul>
         </div>
-      </div>
+      </nav>
 
       <nav class="navbar navbar-default">
-        <a href="#" class="btn btn-small navbar-btn">
-          <i class="fa fa-search"></i>
-        </a>
+        <div class="container-fluid">
+        <ul class="nav navbar-nav">
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-print"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-arrow-left"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-arrow-right"></i>
+        </a></li>
+        <li class="divider-vertical"></li>
+
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-usd"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-percent"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-numbers"></i>
+        </a></li>
+        <li class="divider-vertical"></li>
+
+        <li class="dropdown">
+          <a class="dropdown-toggle" id="font-family-dropdown-menu" data-toggle="dropdown" aria-expanded="false">Arial&nbsp;<i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="font-family-dropdown-menu">
+            <li><a href="#">Arial</a></li>
+            <li><a href="#">Courier new</a></li>
+            <li><a href="#">Georgia</a></li>
+            <li><a href="#">Times New Roman</a></li>
+            <li><a href="#">Trebuchet MS</a></li>
+            <li><a href="#">Verdana</a></li>
+          </ul>
+        </li>
+        <li class="divider-vertical"></li>
+
+        <li class="dropdown">
+          <a class="dropdown-toggle" id="font-size-dropdown-menu" data-toggle="dropdown" aria-expanded="false">10&nbsp;<i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="font-size-dropdown-menu">
+            <li><a href="#">6</a></li>
+            <li><a href="#">7</a></li>
+            <li><a href="#">8</a></li>
+            <li><a href="#">9</a></li>
+            <li><a href="#">10</a></li>
+            <li><a href="#">11</a></li>
+            <li><a href="#">12</a></li>
+            <li><a href="#">14</a></li>
+            <li><a href="#">18</a></li>
+            <li><a href="#">24</a></li>
+            <li><a href="#">36</a></li>
+          </ul>
+        </li>
+        <li class="divider-vertical"></li>
+
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-bold"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-italic"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-underline"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-strikethrough"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-font"></i>
+        </a></li>
+        <li class="divider-vertical"></li>
+
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-eyedropper"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-th"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-underline"></i>
+        </a></li>
+        <li class="divider-vertical"></li>
+
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-align-left"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-long-arrow-down"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-bars"></i>
+        </a></li>
+        <li class="divider-vertical"></li>
+        
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-link"></i>
+        </a></li>
+        <li><a href="#" class="btn btn-small">
+          <i class="fa fa-comment"></i>
+        </a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" id="formulas-dropdown-menu" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-calculator"></i>&nbsp;<i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="formulas-dropdown-menu">
+              <li class="dropdown-header">SUM</li>
+              <li class="dropdown-header">AVERAGE</li>
+              <li class="dropdown-header">COUNT</li>
+              <li class="dropdown-header">MAX</li>
+              <li class="dropdown-header">MIN</li>
+              <li class="dropdown-header">More...</li>
+          </ul>
+        </li>
+        <li class="divider-vertical"></li>
+        
+        </ul>
+        </div>
       </nav>
 
       <input type="text" class="formula-bar">
@@ -117,7 +335,6 @@
     <script src="bower_components/bootstrap-submenu/dist/js/bootstrap-submenu.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-    <script src="bower_components/NicEdit/nicEdit.js"></script>
 
     <!-- build:js({app,.tmp}) scripts/main.js -->
     <script src="scripts/gui.js"></script>

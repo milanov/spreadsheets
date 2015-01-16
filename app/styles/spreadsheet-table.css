@@ -16,7 +16,7 @@
     text-align: right;
 }
 
-.spreadsheet > tbody > tr > td { padding: 2px; text-align: center; background-color: #F3F3F3; }
+.spreadsheet > tbody > tr > td { padding: 2px; text-align: center; background-color: #F3F3F3; font-size: 12px; }
 
 /* Target all table's cells except the first row */ 
 .spreadsheet tr:not(:first-child) td { padding: 0; text-align: center; }
