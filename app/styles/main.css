@@ -15,7 +15,7 @@
 body { position: relative; padding-top: 107px; }
 
 /* Fix header to the top */
-header { position: fixed; top: 0; left: 0; width: 100%; background: #fff;}
+header { position: fixed; top: 0; left: 0; width: 100%; background: #fff; z-index: 100; }
 
 header div.dropdown { padding-left: 30px; margin-bottom: 0px; border-radius: 0; }
 header div.dropdown .dropdown-menu { box-shadow: 0; -webkit-box-shadow: 0; -moz-box-shadow: 0; border-radius: 0; -webkit-border-radius: 0; -moz-border-radius: 0; }
@@ -30,3 +30,4 @@ header .navbar .divider-vertical { height: 52px; margin: 0 5px; border-right: 1p
 header nav.menu { min-height: 0; border-bottom: none; padding-left: 10px; background: none; }
 header nav.menu .nav > li > a { padding: 5px 15px;}
 
+.spreadsheet { z-index: 0; }
