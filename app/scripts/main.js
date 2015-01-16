@@ -14,7 +14,9 @@ $(function() {
         startCols: 26,
         rowHeaders: true,
         colHeaders: true,
-        contextMenu: true
+        contextMenu: true,
+        outsideClickDeselects: false
     });
+    hot.selectCell(0, 0);
 
 });
