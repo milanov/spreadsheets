@@ -4,12 +4,16 @@ $(function() {
     /* Activate Bootstrap's submenu plugin */
     $('.dropdown-submenu > a').submenupicker();
 
+    var spreadsheet = $('#spreadsheet-one');
+    var spreadsheetToolbar = $('#spreadsheet-one-toolbar');
+
     /* Manually calculate and set spreadsheet height, needed for the overflow scrolling functionality */
     var calculatedSpreadsheetHeight = $(window).height() - $('header').height() - $('footer').height();
-    $('#spreadsheet-one').height(calculatedSpreadsheetHeight);
+    spreadsheet.height(calculatedSpreadsheetHeight);
 
-    var container = document.getElementById('spreadsheet-one');
-    var hot = new Handsontable(container, {
+    /* Instantiate and configure Handsontable instance */
+    var ht = new Handsontable(spreadsheet[0], {
+        autoColumnSize: false,
         startRows: 50,
         startCols: 26,
         rowHeaders: true,
@@ -17,6 +21,9 @@ $(function() {
         contextMenu: true,
         outsideClickDeselects: false
     });
-    hot.selectCell(0, 0);
+    ht.selectCell(0, 0);
+
+    /* Instantiate "toolbar" for controlling the Handsontable instance */
+    var htToolbar = new HandsontableToolbar(spreadsheetToolbar[0], ht);
 
 });
