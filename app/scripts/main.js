@@ -24,26 +24,24 @@ $(function() {
         contextMenu: true,
         outsideClickDeselects: false,
         afterChange: function (change, source) {
-
             for(var index in change) {
+                var row = change[index][0], col = change[index][1], value = change[index][3];
 
-                var from = ht.getCellMeta(change[index][0], change[index][1])['calledFrom'];
+                var from = ht.getCellMeta(row, col)['calledFrom'];
                 if (from !== 'mouseDown' && from !== 'spreadsheet') {
-                    spreadsheetObj.setCellFormula(change[index][0],
-                        change[index][1], change[index][3], callbackDataChange);
+                    spreadsheetObj.setCellFormula(row, col, value, callbackDataChange);
                 }
-                ht.setCellMeta (change[index][0], change[index][1], 'calledFrom', '');
+                ht.setCellMeta(row, col, 'calledFrom', '');
             }
-
         },
 
         afterOnCellMouseDown: function (event, coords, TD) {
+            var previouslySelected = spreadsheetObj.getSelected();
 
-            var previouslySelected = spreadsheetObj.getSelected()
             if(previouslySelected !== null) {
-                ht.setCellMeta (previouslySelected['row'], previouslySelected['col'], 'calledFrom', 'mouseDown');
-                ht.setDataAtCell(previouslySelected['row'], previouslySelected['col'], 
-                             spreadsheetObj.getCellValue(previouslySelected['row'], previouslySelected['col']));
+                var row = previouslySelected['row'], col = previouslySelected['col'];
+                ht.setCellMeta (row, col, 'calledFrom', 'mouseDown');
+                ht.setDataAtCell(row, col, spreadsheetObj.getCellValue(row, col));
             }
 
             spreadsheetObj.setSelected(coords.row, coords.col);
@@ -53,6 +51,7 @@ $(function() {
                              spreadsheetObj.getCellFormula(coords.row, coords.col));
         }
     });
+
     ht.selectCell(0, 0);
 
     /* Instantiate "toolbar" for controlling the Handsontable instance */
@@ -61,7 +60,6 @@ $(function() {
     var callbackDataChange = function(row, column, value) {
         ht.setCellMeta(row, column, 'calledFrom', 'spreadsheet');
         ht.setDataAtCell(row, column, value);
-
     }
 
 });
