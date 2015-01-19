@@ -11,19 +11,57 @@ $(function() {
     var calculatedSpreadsheetHeight = $(window).height() - $('header').height() - $('footer').height();
     spreadsheet.height(calculatedSpreadsheetHeight);
 
+    var spreadsheetObj = new Spreadsheet(50, 26, {});
+    spreadsheetObj.recomputeAll(null);
+
     /* Instantiate and configure Handsontable instance */
     var ht = new Handsontable(spreadsheet[0], {
         autoColumnSize: false,
         startRows: 50,
-        startCols: 26,
+        startCols: 28,
         rowHeaders: true,
         colHeaders: true,
         contextMenu: true,
-        outsideClickDeselects: false
+        outsideClickDeselects: false,
+        afterChange: function (change, source) {
+
+            for(var index in change) {
+
+                var from = ht.getCellMeta(change[index][0], change[index][1])['calledFrom'];
+                if (from !== 'mouseDown' && from !== 'spreadsheet') {
+                    spreadsheetObj.setCellFormula(change[index][0],
+                        change[index][1], change[index][3], callbackDataChange);
+                }
+                ht.setCellMeta (change[index][0], change[index][1], 'calledFrom', '');
+            }
+
+        },
+
+        afterOnCellMouseDown: function (event, coords, TD) {
+
+            var previouslySelected = spreadsheetObj.getSelected()
+            if(previouslySelected !== null) {
+                ht.setCellMeta (previouslySelected['row'], previouslySelected['col'], 'calledFrom', 'mouseDown');
+                ht.setDataAtCell(previouslySelected['row'], previouslySelected['col'], 
+                             spreadsheetObj.getCellValue(previouslySelected['row'], previouslySelected['col']));
+            }
+
+            spreadsheetObj.setSelected(coords.row, coords.col);
+            ht.setCellMeta (coords.row, coords.col, 'calledFrom', 'mouseDown');
+
+            ht.setDataAtCell(coords.row, coords.col, 
+                             spreadsheetObj.getCellFormula(coords.row, coords.col));
+        }
     });
     ht.selectCell(0, 0);
 
     /* Instantiate "toolbar" for controlling the Handsontable instance */
     var htToolbar = new HandsontableToolbar(spreadsheetToolbar[0], ht);
+
+    var callbackDataChange = function(row, column, value) {
+        ht.setCellMeta(row, column, 'calledFrom', 'spreadsheet');
+        ht.setDataAtCell(row, column, value);
+
+    }
 
 });
