@@ -107,7 +107,8 @@
             var cellValue = '=' + functionName.toUpperCase() + '(' + startCellCoord + ':' + endCellCoord +')';
             var rowToInsertFormulaIn = (bottomRight.row + 1) === totalRowsCount ? topLeft.row - 1 : bottomRight.row + 1;
 
-            this.setDataAtCell(rowToInsertFormulaIn, topLeft.col, cellValue);  
+            this.selectCell(rowToInsertFormulaIn, topLeft.col);
+            this.getActiveEditor().beginEditing(cellValue);
         },
         disabled: function() {
             var totalRowsCount = this.countRows(),

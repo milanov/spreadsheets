@@ -1,9 +1,8 @@
 function Spreadsheet(rows, cols, storage) {
     'use strict';
 
-    var referenceError = 'Ref error';
+    var referenceError = '#REF!';
     var table = {};
-    var selected = null;
 
     for (var i = 0; i < rows; i++) {
         table[i] = {};
@@ -52,14 +51,6 @@ function Spreadsheet(rows, cols, storage) {
             }
         }
     };
-
-    this.getSelected = function() {
-        return selected;
-    }
-
-    this.setSelected = function(row, col) {
-        selected = {row: row, col:col};
-    }
 
     this.getCellValue = function(row, col) {
         'use strict';
