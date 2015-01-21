@@ -27,6 +27,7 @@ function HandsontableToolbar(toolbar, instance) {
     this.setFormatter('italic');
     this.setFormatter('strikethrough');
     this.setFormatter('underline');
+    this.setFormatter('wrap-text');
     this.setFormatter('change-font-family', [
         'ht-arial',
         'ht-courier-new',
