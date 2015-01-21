@@ -17,15 +17,20 @@
         var assert = chai.assert;
         var expect = chai.expect;
         var should = chai.should();
+        var Assertion = chai.Assertion;
     </script>
+    <script src="spec-helper.js"></script>
 
     <!-- include source files here... -->
     <script src="bower_components/jsep/build/jsep.min.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/excelFormulaUtilitiesJS/excelFormulaUtilities-0.9.43.min.js"></script>
 
+    <script src="scripts/toggle-class.js"></script>
+
     <!-- include spec files here... -->
     <script src="spec/test.js"></script>
+    <script src="spec/toggle-class-spec.js"></script>
 
     <script>mocha.run()</script>
 </body>

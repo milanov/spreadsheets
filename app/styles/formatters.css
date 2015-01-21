@@ -1,0 +1,34 @@
+.ht-bold { font-weight: 900; }
+.ht-italic { font-style: italic; }
+.ht-underline { text-decoration: underline; }
+.ht-strikethrough { text-decoration: line-through; }
+
+.ht-arial { font-family: Arial, Helvetica, sans-serif; }
+.ht-courier-new { font-family: "Courier New", Courier, monospace; }
+.ht-georgia { font-family: Georgia, serif; }
+.ht-times-new-roman { font-family: "Times New Roman", Times, serif; }
+.ht-trebuchet-ms { font-family: "Trebuchet MS", Helvetica, sans-serif; }
+.ht-verdana { font-family: Verdana, Geneva, sans-serif; }
+
+.ht-wrap-text { word-wrap: break-word; }
+
+.ht-size-6 { font-size: 6px; }
+.ht-size-7 { font-size: 7px; }
+.ht-size-8 { font-size: 8px; }
+.ht-size-9 { font-size: 9px; }
+.ht-size-10 { font-size: 10px; }
+.ht-size-11 { font-size: 11px; }
+.ht-size-12 { font-size: 12px; }
+.ht-size-14 { font-size: 14px; }
+.ht-size-18 { font-size: 18px; }
+.ht-size-24 { font-size: 24px; }
+.ht-size-36 { font-size: 36px; }
+
+.ht-left { text-align: left; }
+.ht-center{ text-align: center; }
+.ht-right { text-align: right; }
+.ht-justify { text-align: justify; }
+
+.ht-top { vertical-align: top !important; }
+.ht-middle { vertical-align: middle !important; }
+.ht-bottom { vertical-align: bottom !important; }

@@ -1,5 +1,5 @@
-$(function() {
-    'use strict';
+// $(function() {
+//     'use strict';
 
     /* Activate Bootstrap's submenu plugin */
     $('.dropdown-submenu > a').submenupicker();
@@ -23,6 +23,7 @@ $(function() {
         colHeaders: true,
         contextMenu: true,
         outsideClickDeselects: false,
+        comments: true,
         afterChange: function (change, source) {
             for(var index in change) {
                 var row = change[index][0], col = change[index][1], value = change[index][3];
@@ -61,5 +62,4 @@ $(function() {
         ht.setCellMeta(row, column, 'calledFrom', 'spreadsheet');
         ht.setDataAtCell(row, column, value);
     }
-
-});
+// });
