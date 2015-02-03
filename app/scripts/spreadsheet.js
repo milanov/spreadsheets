@@ -4,39 +4,30 @@ function Spreadsheet(rows, cols, storage) {
     var referenceError = '#REF!';
     var table = {};
 
-    for (var i = 0; i < rows; i++) {
-        table[i] = {};
-        for (var j = 0; j < cols; j++) {
-            table[i][j] = {
-                value: null,
-                formula: '',
-                effects: [],
-                dependsOn: []
-            };
-        }
-    }
-
-    this.convertStringToCoords = function(string) {
-        'use strict';
-
-        var coords = string.match(/([a-zA-Z]+)(\d+)/);
-        var row = coords[2], column = coords[1];
-
-        var counter = 0;
-        var resultColumn = 0;
-        for (var x = column.length - 1; x >= 0; x--) {
-            var c = column.charAt(x);
-
-            c = c.toLowerCase().charCodeAt(0) - 'a'.charCodeAt(0) + 1;
-            var add = c;
-            for (var i = 0; i < counter; i++) {
-                add = add*26;
+    if (storage === undefined) {
+        for (var i = 0; i < rows; i++) {
+            table[i] = {};
+            for (var j = 0; j < cols; j++) {
+                table[i][j] = {
+                    value: null,
+                    formula: '',
+                    affects: [],
+                    dependsOn: []
+                };
             }
-            resultColumn = resultColumn + add;
-            counter += 1;          
+        } 
+    } else {
+        for (var i = 0; i < rows; i++) {
+            table[i] = {};
+            for (var j = 0; j < cols; j++) {
+                table[i][j] = {
+                    value: storage.getCellValue(i, j),
+                    formula: storage.getCellFormula(i, j),
+                    affects: storage.getCellAffects,
+                    dependsOn: storage.getCellDependsOn
+                };
+            }
         }
-        return {row:row - 1, col:resultColumn - 1};
-
     }
 
     this.recomputeAll = function(callback) {
@@ -52,6 +43,18 @@ function Spreadsheet(rows, cols, storage) {
         }
     };
 
+    this.getCellAffects = function(row, col) {
+        'use strict';
+
+        return table[row][col].affects;
+    };
+
+    this.getCellDependsOn = function(row, col) {
+        'use strict';
+
+        return table[row][col].dependsOn;
+    };
+
     this.getCellValue = function(row, col) {
         'use strict';
 
@@ -64,7 +67,7 @@ function Spreadsheet(rows, cols, storage) {
         table[row][col].value = value;
         var that = this;
         // Change the value of all cells that depend on this one
-        $.each(table[row][col].effects, function (index, value) {
+        $.each(table[row][col].affects, function (index, value) {
             that.recompute(value.row, value.col, callback);
         });
     };
@@ -79,25 +82,25 @@ function Spreadsheet(rows, cols, storage) {
         'use strict';
 
         $.each(table[row][col].dependsOn, function (index, value) {
-            var result = table[value.row][value.col].effects.filter(
+            var result = table[value.row][value.col].affects.filter(
                 function( obj ) {
                     return obj.row != row || obj.col != col;
             });
 
-            table[value.row][value.col].effects = result;
+            table[value.row][value.col].affects = result;
         });
         table[row][col].dependsOn = [];
 
         table[row][col].formula = value;
 
-        // Compute the new value
+        /* Compute the new value */
 
         this.recompute(row, col, callback);
 
 
         var that = this;
-        // Change the value of all cells that depend on this one
-        $.each(table[row][col].effects, function (index, value) {
+        /* Change the value of all cells that depend on this one */
+        $.each(table[row][col].affects, function (index, value) {
             that.recompute(value.row, value.col, callback);
         });
     };
@@ -127,50 +130,49 @@ function Spreadsheet(rows, cols, storage) {
             return node.value;
         } else if (node.type === 'Identifier') { // and node.name is in table
 
-            var coords = this.convertStringToCoords(node.name);
+            var coords = convertStringToCoords(node.name);
 
-            // Compute the dependencies of the current cell
-            if (!this.isInArray(coords, table[row][col].dependsOn)) {
+            /* Compute the dependencies of the current cell */
+            if (!isInArray(coords, table[row][col].dependsOn)) {
                 table[row][col].dependsOn.push(coords);
             }
-            var that=this;
 
             $.each(table[coords.row][coords.col].dependsOn, function (index, value) {
-                if (!that.isInArray(value, table[row][col].dependsOn)) {
+                if (!isInArray(value, table[row][col].dependsOn)) {
                     table[row][col].dependsOn.push(value);
                 } 
             });
 
-            // Check if this cell has effect on and at the same
-            // time depends on another cell
-            // If so we've found a reference error            
-            if (this.isInArray(coords, table[row][col].effects) ||
+            /* Check if this cell has effect on and at the same
+               time depends on another cell
+               If so we've found a reference error */          
+            if (isInArray(coords, table[row][col].affects) ||
                     (coords.row === row && coords.col === col)) {
                 throw new Error(referenceError);
             }
 
-            // If we haven't found a reference error yet
-            // we continue with updating the node's affects array
-            // because the current cell depends on it
+            /* If we haven't found a reference error yet
+               we continue with updating the node's affects array
+               because the current cell depends on it */
             var currentCell = {
                 row: row,
                 col: col
             };
 
-            if (!this.isInArray(currentCell, table[coords.row][coords.col].effects)) {
-                table[coords.row][coords.col].effects.push(currentCell);
+            if (!isInArray(currentCell, table[coords.row][coords.col].affects)) {
+                table[coords.row][coords.col].affects.push(currentCell);
             }
 
-            $.each(table[row][col].effects, function (index, value) {
-                if (!that.isInArray(value, table[coords.row][coords.col].effects)) {
-                    table[coords.row][coords.col].effects.push(value);
+            $.each(table[row][col].affects, function (index, value) {
+                if (!isInArray(value, table[coords.row][coords.col].affects)) {
+                    table[coords.row][coords.col].affects.push(value);
                 }
             });
 
             var result = this.getCellValue(coords.row, coords.col);
 
             if (result === null) {
-                // We haven't computed the cell's value yet
+                /* We haven't computed the cell's value yet */
                 this.recompute(coords.row, coords.col, callback);
                 result = this.getCellValue(coords.row, coords.col);
                 if (result === referenceError) {
@@ -178,7 +180,7 @@ function Spreadsheet(rows, cols, storage) {
                 }
             }
             if (result === referenceError) {
-                // The cell that we depend on has referece error
+                /* The cell that we depend on has referece error */
                 throw new Error(referenceError);
             }
 
@@ -192,10 +194,14 @@ function Spreadsheet(rows, cols, storage) {
         var value = this.getCellFormula(row, col);
         var evaluatedValue = value;
         if (value.charAt(0) === '=') {
+            /* Remove the 'equal' sign and the whitespace before evaluating */
             value = value.slice(1);
             value = evaluatedValue = value.trim();
 
             if (value !== '') {
+                /* Wrap the value to be evaluated with 'DUMMY' function 
+                   so it can be passed to 'excelFormulaUtilities'.
+                   After that we unwrap the result before pass it to jsep */
                 var jsFormula = excelFormulaUtilities.formula2JavaScript('DUMMY(' + value + ')');
                 jsFormula = jsFormula.slice(6, -1);
 
@@ -210,19 +216,52 @@ function Spreadsheet(rows, cols, storage) {
                 }
             }
         }
+        /* Update the value with the newly evaluated one */
         this.setCellValue(row, col, evaluatedValue, callback);
         if (callback !== null) {
             callback(row, col, evaluatedValue);
         }
     }
+}
 
-    this.isInArray = function(object, array) {
-        'use strict';
+function isInArray(object, array) {
+    'use strict';
 
-        var result = array.filter(function( obj ) {
-                return obj.row === object.row && obj.col === object.col;
-        });
+    var result = array.filter(function( obj ) {
+            return obj.row === object.row && obj.col === object.col;
+    });
 
-        return result.length !== 0;
+    return result.length !== 0;
+}
+
+function convertStringToCoords(string) {
+    'use strict';
+
+    var coords = string.match(/([a-zA-Z]+)(\d+)/);
+    var row = coords[2], column = coords[1];
+    var alphabetLetters = 26;
+    var counter = 0;
+    var resultColumn = 0;
+
+    if (row <= 0) {
+        return null;
     }
+
+    for (var x = column.length - 1; x >= 0; x--) {
+
+        var character = column.charAt(x);
+        var characterIndex = character.toLowerCase().charCodeAt(0) - 'a'.charCodeAt(0) + 1;
+        var toAdd = characterIndex;
+
+        for (var i = 0; i < counter; i++) {
+            toAdd *= alphabetLetters;
+        }
+
+        resultColumn += toAdd;
+        counter++;          
+    }
+    return {
+        row: row - 1,
+        col: resultColumn - 1
+    };
 }
