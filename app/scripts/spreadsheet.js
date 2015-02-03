@@ -31,8 +31,6 @@ function Spreadsheet(rows, cols, storage) {
     }
 
     this.recomputeAll = function(callback) {
-        'use strict';
-
         for (var i = 0; i < rows; i++) {
             for (var j = 0; j < cols; j++) {
 
@@ -44,26 +42,18 @@ function Spreadsheet(rows, cols, storage) {
     };
 
     this.getCellAffects = function(row, col) {
-        'use strict';
-
         return table[row][col].affects;
     };
 
     this.getCellDependsOn = function(row, col) {
-        'use strict';
-
         return table[row][col].dependsOn;
     };
 
     this.getCellValue = function(row, col) {
-        'use strict';
-
         return table[row][col].value;
     };
 
     this.setCellValue = function(row, col, value, callback) {
-        'use strict';
-
         table[row][col].value = value;
         var that = this;
         // Change the value of all cells that depend on this one
@@ -73,18 +63,15 @@ function Spreadsheet(rows, cols, storage) {
     };
 
     this.getCellFormula = function(row, col) {
-        'use strict';
-
         return table[row][col].formula;
     };
 
     this.setCellFormula = function(row, col, value, callback) {
-        'use strict';
 
         $.each(table[row][col].dependsOn, function (index, value) {
             var result = table[value.row][value.col].affects.filter(
                 function( obj ) {
-                    return obj.row != row || obj.col != col;
+                    return obj.row !== row || obj.col !== col;
             });
 
             table[value.row][value.col].affects = result;
@@ -118,7 +105,6 @@ function Spreadsheet(rows, cols, storage) {
     };
 
     this.doEval = function(row, col, node, callback) {
-       'use strict';
 
         if(node.type === 'BinaryExpression') {
             return binops[node.operator](
@@ -186,10 +172,9 @@ function Spreadsheet(rows, cols, storage) {
 
             return result === '' ? 0 : parseFloat(result);
         }
-    }
+    };
 
     this.recompute = function(row, col, callback) {
-        'use strict';
 
         var value = this.getCellFormula(row, col);
         var evaluatedValue = value;
@@ -219,7 +204,7 @@ function Spreadsheet(rows, cols, storage) {
         if (callback !== undefined && callback !== null) {
             callback(row, col, evaluatedValue);
         }
-    }
+    };
 }
 
 function isInArray(object, array) {

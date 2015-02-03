@@ -17,7 +17,7 @@ $(function() {
     /* TODO: Add the ability to remove a tab */
     plusTab.on('click', function() {
         var index = ++numberOfSpreadsheets;
-        var spreadsheetId = "spreadsheet-" + index;
+        var spreadsheetId = 'spreadsheet-' + index;
 
         $('#tab-list li').removeClass('active');
         $('#tab-list').append('<li class="active"><a href="#' + spreadsheetId + '" data-toggle="tab">Sheet ' + index + '</a></li>');
@@ -29,6 +29,7 @@ $(function() {
 });
 
 function createHandsontableSpreadsheet(id, index, parentSpreadsheet) {
+    'use strict';
 
     var newSpreadsheet = $('#spreadsheet-hidden').clone();
     newSpreadsheet.attr('id', id);
