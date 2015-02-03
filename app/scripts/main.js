@@ -41,7 +41,7 @@ function createHandsontableSpreadsheet(id, index, parentSpreadsheet) {
     $('#tab-content').append(newSpreadsheet);
 
     var spreadsheetObj = new Spreadsheet(50, 28, parentSpreadsheet);
-    var SpreadsheetEditor = getSpreadsheetEditor(spreadsheetObj);
+    //var SpreadsheetEditor = getSpreadsheetEditor(spreadsheetObj);
 
     var ht = new Handsontable(newSpreadsheet[0], {
         autoColumnSize: false,
@@ -51,9 +51,10 @@ function createHandsontableSpreadsheet(id, index, parentSpreadsheet) {
         colHeaders: true,
         contextMenu: true,
         outsideClickDeselects: false,
-        comments: true,
-        editor: SpreadsheetEditor
+        comments: true
     });
+    ht.updateSettings({ editor: getSpreadsheetEditor(spreadsheetObj, ht) });
+
     ht.selectCell(0, 0);
 
     return ht;

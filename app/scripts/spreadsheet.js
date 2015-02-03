@@ -117,15 +117,15 @@ function Spreadsheet(rows, cols, storage) {
         '+' : function(a) { return a; }
     };
 
-    this.doEval = function(row, col, node) {
+    this.doEval = function(row, col, node, callback) {
        'use strict';
 
         if(node.type === 'BinaryExpression') {
             return binops[node.operator](
-                this.doEval(row, col, node.left),
-                this.doEval(row, col, node.right));
+                this.doEval(row, col, node.left, callback),
+                this.doEval(row, col, node.right, callback));
         } else if(node.type === 'UnaryExpression') {
-            return unops[node.operator](this.doEval(row, col, node.argument));
+            return unops[node.operator](this.doEval(row, col, node.argument, callback));
         } else if(node.type === 'Literal') {
             return node.value;
         } else if (node.type === 'Identifier') { // and node.name is in table
@@ -173,7 +173,7 @@ function Spreadsheet(rows, cols, storage) {
 
             if (result === null) {
                 /* We haven't computed the cell's value yet */
-                this.recompute(coords.row, coords.col, null);
+                this.recompute(coords.row, coords.col, callback);
                 result = this.getCellValue(coords.row, coords.col);
                 if (result === referenceError) {
                     throw new Error(referenceError);
@@ -206,12 +206,10 @@ function Spreadsheet(rows, cols, storage) {
                 jsFormula = jsFormula.slice(6, -1);
 
                 try {
-                    evaluatedValue = this.doEval(row, col, jsep(jsFormula));                  
+                    evaluatedValue = this.doEval(row, col, jsep(jsFormula), callback);                  
                 } catch (e) {
                     if (e.message === referenceError) {
                         evaluatedValue = e.message;
-                    } else {
-                        throw new Error(e.message);
                     }
                 }
             }
