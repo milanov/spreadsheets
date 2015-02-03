@@ -173,7 +173,7 @@ function Spreadsheet(rows, cols, storage) {
 
             if (result === null) {
                 /* We haven't computed the cell's value yet */
-                this.recompute(coords.row, coords.col, callback);
+                this.recompute(coords.row, coords.col, null);
                 result = this.getCellValue(coords.row, coords.col);
                 if (result === referenceError) {
                     throw new Error(referenceError);
@@ -218,7 +218,7 @@ function Spreadsheet(rows, cols, storage) {
         }
         /* Update the value with the newly evaluated one */
         this.setCellValue(row, col, evaluatedValue, callback);
-        if (callback !== null) {
+        if (callback !== undefined && callback !== null) {
             callback(row, col, evaluatedValue);
         }
     }
