@@ -353,13 +353,22 @@
       <input type="text" id="formula-bar">
     </header>
 
-    <div id="spreadsheet-one" class="spreadsheet" data-originalstyle="width: 100%; overflow: auto" style="width: 100%; overflow: auto"></div>
+    <div class="tabbable">
+        <div id="tab-content" class="tab-content">
+        </div>
+    </div>
 
     <footer class="footer navbar-default navbar-fixed-bottom">
-      <div class="container">
-        <span class="navbar-text">Something useful</span>
-      </div>
+      <ul id="tab-list" class="nav nav-tabs dropup">
+          <li><a id="js-plus-tab" tabindex="0"><i class="fa fa-plus"></i></a></li>
+          <li><a tabindex="0"><i class="fa fa-bars"></i></a></li>
+          <li class="active">
+            <a id="tab-1" href="#spreadsheet-1" data-toggle="tab" >Sheet 1 </a>
+          </li>
+      </ul>
     </footer>
+
+    <div id="spreadsheet-hidden" class="spreadsheet tab-pane active hidden" data-originalstyle="width: 100%; overflow: auto" style="width: 100%; overflow: auto"></div>
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
@@ -380,6 +389,7 @@
     <script src="scripts/spreadsheet-editor.js"></script>
     <script src="scripts/spreadsheet.js"></script>
     <script src="scripts/main.js"></script>
+
     <!-- endbuild -->
 </body>
 </html>
