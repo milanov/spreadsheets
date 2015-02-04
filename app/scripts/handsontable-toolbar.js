@@ -1,10 +1,23 @@
 
-function HandsontableToolbar(toolbar, instance) {
+function HandsontableToolbar(toolbar) {
     'use strict';
 
     var that = this;
-    this._actionHandlers = {};
-    this._instance = instance;
+    this._actionHandlers = {};  
+
+    /* Capture events from the "toolbar" and handle them */
+    $(toolbar).on('click', 'a[data-edit-action]', function() {
+        var action = $(this).data('edit-action'),
+            argument = $(this).data('edit-argument');
+
+        that._actionHandlers[action].callback.call(that._instance, argument);
+    });
+}
+
+HandsontableToolbar.prototype.initToolbarForInstance = function(instance) {
+    'use srtict';
+
+    this.setInstance(instance);
 
     this.setAction('undo', Handsontable.Actions.undo);
     this.setAction('redo', Handsontable.Actions.redo);
@@ -61,13 +74,12 @@ function HandsontableToolbar(toolbar, instance) {
             'ht-justify'
     ]);
 
-    /* Capture events from the "toolbar" and handle them */
-    $(toolbar).on('click', 'a[data-edit-action]', function() {
-        var action = $(this).data('edit-action'),
-            argument = $(this).data('edit-argument');
+}
 
-        that._actionHandlers[action].callback.call(that._instance, argument);
-    });
+HandsontableToolbar.prototype.setInstance = function(instance) {
+    'use strict';
+
+    this._instance = instance;
 }
 
 HandsontableToolbar.prototype.setAction = function(name, action) {

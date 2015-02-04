@@ -4,13 +4,11 @@ $(function() {
     /* Activate Bootstrap's submenu plugin */
     $('.dropdown-submenu > a').submenupicker();
 
-    var numberOfSpreadsheets = 1;
-
     var spreadsheetToolbar = $('#spreadsheet-one-toolbar');
 
     /* Instantiate "toolbar" for controlling the Handsontable instance */
-    var htToolbar = new HandsontableToolbar(spreadsheetToolbar[0], 
-            createHandsontableSpreadsheet('spreadsheet-1', '1'));
+    var htToolbar = new HandsontableToolbar(spreadsheetToolbar[0]);
+    var numberOfSpreadsheets = 0;
 
     var plusTab = $('#js-plus-tab');
 
@@ -18,17 +16,22 @@ $(function() {
     plusTab.on('click', function() {
         var index = ++numberOfSpreadsheets;
         var spreadsheetId = 'spreadsheet-' + index;
+        var tabId = 'tab-' + index;
 
         $('#tab-list li').removeClass('active');
-        $('#tab-list').append('<li class="active"><a href="#' + spreadsheetId + '" data-toggle="tab">Sheet ' + index + '</a></li>');
+        $('#tab-list').append('<li class="active"><a id="' + tabId + '" href="#' + spreadsheetId + '" data-toggle="tab">Sheet ' + index + '</a></li>');
 
-        /* Instantiate "toolbar" for controlling the Handsontable instance */
-        var htToolbar = new HandsontableToolbar(spreadsheetToolbar[0], 
-            createHandsontableSpreadsheet(spreadsheetId, index));
+        var handsontable = createHandsontableSpreadsheet(spreadsheetId);
+        htToolbar.initToolbarForInstance(handsontable);
+
+        $('#' + tabId).on('click', htToolbar.setInstance(handsontable));
     });
+
+    plusTab.click();
+
 });
 
-function createHandsontableSpreadsheet(id, index, parentSpreadsheet) {
+function createHandsontableSpreadsheet(id, parentSpreadsheet) {
     'use strict';
 
     var newSpreadsheet = $('#spreadsheet-hidden').clone();
@@ -42,7 +45,6 @@ function createHandsontableSpreadsheet(id, index, parentSpreadsheet) {
     $('#tab-content').append(newSpreadsheet);
 
     var spreadsheetObj = new Spreadsheet(50, 28, parentSpreadsheet);
-    //var SpreadsheetEditor = getSpreadsheetEditor(spreadsheetObj);
 
     var ht = new Handsontable(newSpreadsheet[0], {
         autoColumnSize: false,
@@ -54,7 +56,7 @@ function createHandsontableSpreadsheet(id, index, parentSpreadsheet) {
         outsideClickDeselects: false,
         comments: true
     });
-    ht.updateSettings({ editor: getSpreadsheetEditor(spreadsheetObj, ht) });
+    ht.updateSettings({ editor: getSpreadsheetEditor(spreadsheetObj, ht, id) });
 
     ht.selectCell(0, 0);
 
