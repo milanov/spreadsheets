@@ -24,29 +24,43 @@ function HandsontableToolbar(toolbar) {
         this.render();
     });
 
-    this.setAction('format-as-number', {
+    this.setAction('format-numeric', {
         callback: function(type) {
             var instance = this,
-                renderer = 'numeric',
-                format = '';
+                renderer, format;
 
             switch(type) {
                 case 'number':
                     format = '0,0.0';
+                    renderer = 'numeric';
                     break;
                 case 'percent':
                     format = '0%';
+                    renderer = 'numeric';
                     break;
                 case 'financial':
                     format = '(0,0.0)';
+                    renderer = 'numeric';
                     break;
                 case 'currency':
                     format = '$0,0.0';
+                    renderer = 'numeric';
+                    break;
+                case 'date':
+                    format = 'MM/DD/YYYY';
+                    renderer = 'date';
+                    break;
+                case 'time':
+                    format = 'h:mm:ss A';
+                    renderer = 'date';
+                    break;
+                case 'date-time':
+                    format = 'MM/DD/YYYY H:mm:ss';
+                    renderer = 'date';
                     break;
                 default:
                     renderer = 'text';
             }
-
 
             this.getSelectedRange().forAll(function(row, col) {
                 instance.setCellMeta(row, col, 'renderer', renderer);

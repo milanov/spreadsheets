@@ -8,6 +8,7 @@
     "bootstrap-submenu": "~1.2.10",
     "handsontable": "~0.12.3",
     "jsep": "~0.3.0",
-    "excelFormulaUtilitiesJS": "git://github.com/joshatjben/excelFormulaUtilitiesJS.git"
+    "excelFormulaUtilitiesJS": "git://github.com/joshatjben/excelFormulaUtilitiesJS.git",
+    "moment": "~2.9.0"
   }
 }
