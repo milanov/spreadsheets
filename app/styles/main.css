@@ -39,7 +39,6 @@ header .navbar .nav > li > a { padding: 5px 6px; }
 /* Make all spreadsheets "lower than the grass" */
 .spreadsheet { z-index: 0; }
 
-
 .nav-tabs {
 padding-left: 33px;
 border-top: 1px solid #ddd;
@@ -72,3 +71,7 @@ border: 1px solid #ddd;
 border-top-color: transparent;
 }
 
+
+#top-menu a.active::after { 
+    content: " ✔";
+}

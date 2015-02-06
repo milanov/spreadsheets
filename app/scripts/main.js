@@ -21,14 +21,54 @@ $(function() {
         $('#tab-list').append('<li class="active"><a id="' + tabId + '" href="#' + spreadsheetId + '" data-toggle="tab">Sheet ' + index + '</a></li>');
 
         var handsontable = createHandsontableSpreadsheet(spreadsheetId);
-        htToolbar.initToolbarForInstance(handsontable);
+        handsontable.addHook('afterSelection', function(r, c, r2, c2) {
+            var selected = handsontable.getSelectedRange();
+            var classesFrequency = {};
+            var flag = true;
+
+            /* Find the common format classes for all selected cells */
+            selected.forAll(function(row, col) {
+                var metaData = handsontable.getCellMeta(row, col)['className'];
+                if (metaData === undefined) {
+                    flag = false;
+                    return false;
+                }
+                var classes = metaData.split(' ');
+                for (var index in classes) {
+                    if (classesFrequency[classes[index]] === undefined) {
+                        classesFrequency[classes[index]] = 0;
+                    }
+                    classesFrequency[classes[index]]++;
+                }
+            });
+
+            var intersection = findIntersection(classesFrequency, selected.getWidth()*selected.getHeight());
+            if (flag === true) {
+                htToolbar.updateUI(intersection);
+            } else {
+                htToolbar.resetUI();
+            }
+        });
+
+        htToolbar.setInstance(handsontable);
 
         $('#' + tabId).on('click', htToolbar.setInstance(handsontable));
     });
 
     plusTab.click();
-
 });
+
+function findIntersection(classes, count) {
+    var intersection = [];
+
+    for (var classElement in classes) {
+        if (classes[classElement] === count) {
+            intersection.push(classElement);
+        }
+    }
+
+    return intersection;
+}
 
 function createHandsontableSpreadsheet(id) {
     'use strict';

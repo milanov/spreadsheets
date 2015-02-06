@@ -3,21 +3,9 @@ function HandsontableToolbar(toolbar) {
     'use strict';
 
     var that = this;
+
     this._actionHandlers = {};  
-
-    /* Capture events from the "toolbar" and handle them */
-    $(toolbar).on('click', 'a[data-edit-action]', function() {
-        var action = $(this).data('edit-action'),
-            argument = $(this).data('edit-argument');
-
-        that._actionHandlers[action].callback.call(that._instance, argument);
-    });
-}
-
-HandsontableToolbar.prototype.initToolbarForInstance = function(instance) {
-    'use strict';
-
-    this.setInstance(instance);
+    this._formatterElements = {};
 
     this.setAction('undo', Handsontable.Actions.undo);
     this.setAction('redo', Handsontable.Actions.redo);
@@ -75,40 +63,146 @@ HandsontableToolbar.prototype.initToolbarForInstance = function(instance) {
     this.setFormatter('strikethrough');
     this.setFormatter('underline');
     this.setFormatter('wrap-text');
-    this.setFormatter('change-font-family', [
-        'ht-arial',
-        'ht-courier-new',
-        'ht-georgia',
-        'ht-times-new-roman',
-        'ht-trebuchet-ms',
-        'ht-verdan'
-    ]);
-    this.setFormatter('change-font-size', [
-        'ht-size-6',
-        'ht-size-7',
-        'ht-size-8',
-        'ht-size-9',
-        'ht-size-10',
-        'ht-size-11',
-        'ht-size-12',
-        'ht-size-14',
-        'ht-size-18',
-        'ht-size-24',
-        'ht-size-36'
-    ]);
-    this.setFormatter('align-vertically', [
-        'ht-top',
-        'ht-middle',
-        'ht-bottom'
-    ]);
-    this.setFormatter('align-horizontally', [
+    this.setFormatter('change-font-family',
+        'arial',
+        [
+            'ht-arial',
+            'ht-courier-new',
+            'ht-georgia',
+            'ht-times-new-roman',
+            'ht-trebuchet-ms',
+            'ht-verdan'
+        ]
+    );
+    this.setFormatter('change-font-size',
+        'size-14',
+        [
+            'ht-size-6',
+            'ht-size-7',
+            'ht-size-8',
+            'ht-size-9',
+            'ht-size-10',
+            'ht-size-11',
+            'ht-size-12',
+            'ht-size-14',
+            'ht-size-18',
+            'ht-size-24',
+            'ht-size-36'
+        ]
+    );
+    this.setFormatter('align-vertically',
+        'top',
+        [
+            'ht-top',
+            'ht-middle',
+            'ht-bottom'
+        ]
+    );
+    this.setFormatter('align-horizontally',
+        'left', 
+        [
             'ht-left',
             'ht-center',
             'ht-right',
             'ht-justify'
-    ]);
+        ]
+    );
 
-};
+    /* Capture events from the "toolbar" and handle them */
+    $(toolbar).on('click', 'a[data-edit-action]', function() {
+        var action = $(this).data('edit-action'),
+            argument = $(this).data('edit-argument');
+
+        if (action in that._formatterElements) {
+            that.updateUIElement(action, argument);
+        }
+
+        that._actionHandlers[action].callback.call(that._instance, argument);
+    });
+}
+
+HandsontableToolbar.prototype.updateUI = function(elements) {
+    this.resetUI();
+
+    for(var index in elements) {
+        var formatString = elements[index];
+        var action = this.findActionFromValue(formatString);
+        if (action === undefined) {
+            return;
+        }
+
+        if (formatString.substring(0,3) === 'ht-') {
+            formatString = formatString.substring(3);
+        }
+
+        this.updateUIElement(action, formatString);
+    }
+
+}
+
+HandsontableToolbar.prototype.findActionFromValue = function(value) {
+    for (var action in this._formatterElements) {
+        if ($.inArray(value, this._formatterElements[action]['alternatives']) !== -1) {
+            return action;
+        }
+    }
+}
+
+HandsontableToolbar.prototype.updateUIElement = function(action, argument) {
+    /* Get the format elements - from the toolbar and from the menu */
+    var uiElement = this.getUIElement(action, argument);
+
+    if (argument !== undefined && action !== argument) {
+        /* We are dealing with a dropdown menu */
+
+        /* Iterate through all the alternatives and remove the check marks, if any */
+        var alternatives = this._formatterElements[action]['alternatives'];
+        for (var i in alternatives) {
+            var arg = alternatives[i];
+            var element = this.getUIElement(action, arg.substring(3));
+            element.removeClass('active');
+        }
+
+        uiElement.addClass('active');
+        this.updateDropDowns(action, argument);
+
+    } else {
+        if (uiElement.hasClass('active')) {
+            uiElement.removeClass('active');
+        } else {
+            uiElement.addClass('active');
+        }
+    }
+}
+
+HandsontableToolbar.prototype.resetUI = function() {
+    for (var action in this._formatterElements) {
+        var defaultValue = this._formatterElements[action]['default'];
+
+        if (defaultValue !== undefined) {
+            this.updateUIElement(action, defaultValue);
+        } else {
+            var uiElement = this.getUIElement(action, action);
+            uiElement.removeClass('active');
+        }
+    }
+}
+
+HandsontableToolbar.prototype.updateDropDowns = function(action, argument) {
+    var dropdown = $('#' + action + '-dropdown-menu');
+    var newValue = $('a[data-edit-action=' + action + '][data-edit-argument=' + argument + ']:last').text();
+
+    dropdown.html(newValue + '&nbsp;<i class="fa fa-caret-down"></i>');
+}
+
+
+HandsontableToolbar.prototype.getUIElement = function(action, argument) {
+    if (action === argument || argument === undefined) {
+        return $('a[data-edit-action=' + action + ']');
+    }
+    // Else - element from dropdown menu
+    return $('a[data-edit-action=' + action + '][data-edit-argument=' + argument + ']');
+}
 
 HandsontableToolbar.prototype.setInstance = function(instance) {
     'use strict';
@@ -122,17 +216,20 @@ HandsontableToolbar.prototype.setAction = function(name, action) {
     this._actionHandlers[name] = action;
 };
 
-HandsontableToolbar.prototype.setFormatter = function(name, classesGroup) {
+HandsontableToolbar.prototype.setFormatter = function(name, defaultValue, classesGroup) {
     'use strict';
 
-    var instance = this._instance;
+    this._formatterElements[name] = {
+        'default': defaultValue,
+        'alternatives': classesGroup === undefined ? ['ht-' + name] : classesGroup
+    }
 
     this._actionHandlers[name] = {
         callback: function(newCls) {
             var CLASS_PREFIX = 'ht-';
             newCls = CLASS_PREFIX + (newCls ? newCls : name);
 
-            Handsontable.Actions.toggleClass.callback.call(instance, instance.getSelectedRange(), newCls, classesGroup);
+            Handsontable.Actions.toggleClass.callback.call(this, this.getSelectedRange(), newCls, classesGroup);
         },
         disabled: false
     };
