@@ -187,7 +187,7 @@ HandsontableToolbar.prototype.resetUI = function() {
 
 HandsontableToolbar.prototype.updateDropdown = function(action, argument) {
     var dropdown = $('#' + action + '-dropdown-menu');
-    var newValue = $('a[data-edit-action=' + action + '][data-edit-argument=' + argument + ']:last').text();
+    var newValue = $('a[data-edit-action=' + action + '][data-edit-argument=' + argument + ']:last').html();
 
     dropdown.html(newValue + '&nbsp;<i class="fa fa-caret-down"></i>');
 }
