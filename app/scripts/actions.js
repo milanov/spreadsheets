@@ -89,16 +89,14 @@
     Actions.insertFunction = {
         callback: function(functionName) {
             var totalRowsCount = this.countRows(),
-              selection = this.getSelectedRange(),
-              startRow = selection.from.row,
-              startCol = selection.from.col;
+              selection = this.getSelectedRange();
 
             var topLeft = selection.getTopLeftCorner(),
                 bottomRight = selection.getBottomRightCorner();
 
             if (selection.isSingle()) {
-                var newValue = '=' + functionName.toUpperCase() + '()';
-                this.setDataAtCell(startRow, startCol, newValue);
+                var cellValue = '=' + functionName.toUpperCase() + '()';
+                this.getActiveEditor().beginEditing(cellValue);
                 return;
             }
 
