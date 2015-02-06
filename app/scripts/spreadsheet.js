@@ -187,7 +187,7 @@ function Spreadsheet(rows, cols, storage) {
         }
         /* Update the value with the newly evaluated one */
         this.setCellValue(row, col, evaluatedValue, callback);
-        if (callback !== undefined && callback !== null) {
+        if (callback) {
             callback(row, col, evaluatedValue);
         }
     };

@@ -24,41 +24,35 @@ $(function() {
         handsontable.addHook('afterSelection', function(r, c, r2, c2) {
             var selected = handsontable.getSelectedRange();
             var classesFrequency = {};
-            var flag = true;
 
             /* Find the common format classes for all selected cells */
             selected.forAll(function(row, col) {
-                var metaData = handsontable.getCellMeta(row, col)['className'];
-                if (metaData === undefined) {
-                    flag = false;
+                var className = handsontable.getCellMeta(row, col).className;
+                if (!className) {
                     return false;
                 }
-                var classes = metaData.split(' ');
-                for (var index in classes) {
-                    if (classesFrequency[classes[index]] === undefined) {
-                        classesFrequency[classes[index]] = 0;
+
+                var classes = wordsIn(className);
+                classes.forEach(function(currentClass) {
+                    if (!classesFrequency[currentClass]) {
+                        classesFrequency[currentClass] = 0;
                     }
-                    classesFrequency[classes[index]]++;
-                }
+                    classesFrequency[currentClass]++;
+                });
             });
 
-            var intersection = findIntersection(classesFrequency, selected.getWidth()*selected.getHeight());
-            if (flag === true) {
-                htToolbar.updateUI(intersection);
-            } else {
-                htToolbar.resetUI();
-            }
+            var commonClasses = filterCommonClasses(classesFrequency, selected.getWidth()*selected.getHeight());
+            htToolbar.updateUI(commonClasses);
         });
 
         htToolbar.setInstance(handsontable);
-
         $('#' + tabId).on('click', htToolbar.setInstance(handsontable));
     });
 
     plusTab.click();
 });
 
-function findIntersection(classes, count) {
+function filterCommonClasses(classes, count) {
     var intersection = [];
 
     for (var classElement in classes) {

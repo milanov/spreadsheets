@@ -46,3 +46,7 @@ function isFormula(literal) {
 
     return literal && literal[0] === '=';
 }
+
+function wordsIn(str) {
+    return str.match(/\S+/g) || [];
+}

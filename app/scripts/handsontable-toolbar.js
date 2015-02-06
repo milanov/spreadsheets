@@ -127,7 +127,7 @@ HandsontableToolbar.prototype.updateUI = function(elements) {
     for(var index in elements) {
         var formatString = elements[index];
         var action = this.findActionFromValue(formatString);
-        if (action === undefined) {
+        if (!action) {
             return;
         }
 
@@ -142,7 +142,7 @@ HandsontableToolbar.prototype.updateUI = function(elements) {
 
 HandsontableToolbar.prototype.findActionFromValue = function(value) {
     for (var action in this._formatterElements) {
-        if ($.inArray(value, this._formatterElements[action]['alternatives']) !== -1) {
+        if ($.inArray(value, this._formatterElements[action].alternatives) !== -1) {
             return action;
         }
     }
@@ -152,34 +152,31 @@ HandsontableToolbar.prototype.updateUIElement = function(action, argument) {
     /* Get the format elements - from the toolbar and from the menu */
     var uiElement = this.getUIElement(action, argument);
 
-    if (argument !== undefined && action !== argument) {
+    if (this.isElementDropdown(action, argument)) {
         /* We are dealing with a dropdown menu */
 
         /* Iterate through all the alternatives and remove the check marks, if any */
-        var alternatives = this._formatterElements[action]['alternatives'];
-        for (var i in alternatives) {
-            var arg = alternatives[i];
-            var element = this.getUIElement(action, arg.substring(3));
+        var alternatives = this._formatterElements[action].alternatives;
+        var that = this;
+        alternatives.forEach(function(alternative) {
+            /* Remove the 'ht-' prefix and search for the DOM element */
+            var element = that.getUIElement(action, alternative.substring(3));
             element.removeClass('active');
-        }
+        });
 
         uiElement.addClass('active');
-        this.updateDropDowns(action, argument);
+        this.updateDropdown(action, argument);
 
     } else {
-        if (uiElement.hasClass('active')) {
-            uiElement.removeClass('active');
-        } else {
-            uiElement.addClass('active');
-        }
+        uiElement.toggleClass('active');
     }
 }
 
 HandsontableToolbar.prototype.resetUI = function() {
     for (var action in this._formatterElements) {
-        var defaultValue = this._formatterElements[action]['default'];
+        var defaultValue = this._formatterElements[action].default;
 
-        if (defaultValue !== undefined) {
+        if (defaultValue) {
             this.updateUIElement(action, defaultValue);
         } else {
             var uiElement = this.getUIElement(action, action);
@@ -188,7 +185,7 @@ HandsontableToolbar.prototype.resetUI = function() {
     }
 }
 
-HandsontableToolbar.prototype.updateDropDowns = function(action, argument) {
+HandsontableToolbar.prototype.updateDropdown = function(action, argument) {
     var dropdown = $('#' + action + '-dropdown-menu');
     var newValue = $('a[data-edit-action=' + action + '][data-edit-argument=' + argument + ']:last').text();
 
@@ -197,11 +194,15 @@ HandsontableToolbar.prototype.updateDropDowns = function(action, argument) {
 
 
 HandsontableToolbar.prototype.getUIElement = function(action, argument) {
-    if (action === argument || argument === undefined) {
+    if (!this.isElementDropdown(action, argument)) {
         return $('a[data-edit-action=' + action + ']');
     }
-    // Else - element from dropdown menu
+    // Else - element from a dropdown menu
     return $('a[data-edit-action=' + action + '][data-edit-argument=' + argument + ']');
+}
+
+HandsontableToolbar.prototype.isElementDropdown = function(action, argument) {
+    return argument && action !== argument;
 }
 
 HandsontableToolbar.prototype.setInstance = function(instance) {
@@ -221,7 +222,7 @@ HandsontableToolbar.prototype.setFormatter = function(name, defaultValue, classe
 
     this._formatterElements[name] = {
         'default': defaultValue,
-        'alternatives': classesGroup === undefined ? ['ht-' + name] : classesGroup
+        'alternatives': !classesGroup ? ['ht-' + name] : classesGroup
     }
 
     this._actionHandlers[name] = {
