@@ -4,29 +4,15 @@ function Spreadsheet(rows, cols, storage) {
     var referenceError = '#REF!';
     var table = {};
 
-    if (storage === undefined) {
-        for (var i = 0; i < rows; i++) {
-            table[i] = {};
-            for (var j = 0; j < cols; j++) {
-                table[i][j] = {
-                    value: null,
-                    formula: '',
-                    affects: [],
-                    dependsOn: []
-                };
-            }
-        } 
-    } else {
-        for (var i = 0; i < rows; i++) {
-            table[i] = {};
-            for (var j = 0; j < cols; j++) {
-                table[i][j] = {
-                    value: storage.getCellValue(i, j),
-                    formula: storage.getCellFormula(i, j),
-                    affects: storage.getCellAffects,
-                    dependsOn: storage.getCellDependsOn
-                };
-            }
+    for (var i = 0; i < rows; i++) {
+        table[i] = {};
+        for (var j = 0; j < cols; j++) {
+            table[i][j] = {
+                value: null,
+                formula: '',
+                affects: [],
+                dependsOn: []
+            };
         }
     }
 
@@ -217,34 +203,3 @@ function isInArray(object, array) {
     return result.length !== 0;
 }
 
-function convertStringToCoords(string) {
-    'use strict';
-
-    var coords = string.match(/([a-zA-Z]+)(\d+)/);
-    var row = coords[2], column = coords[1];
-    var alphabetLetters = 26;
-    var counter = 0;
-    var resultColumn = 0;
-
-    if (row <= 0) {
-        return null;
-    }
-
-    for (var x = column.length - 1; x >= 0; x--) {
-
-        var character = column.charAt(x);
-        var characterIndex = character.toLowerCase().charCodeAt(0) - 'a'.charCodeAt(0) + 1;
-        var toAdd = characterIndex;
-
-        for (var i = 0; i < counter; i++) {
-            toAdd *= alphabetLetters;
-        }
-
-        resultColumn += toAdd;
-        counter++;          
-    }
-    return {
-        row: row - 1,
-        col: resultColumn - 1
-    };
-}

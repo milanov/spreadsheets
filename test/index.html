@@ -22,17 +22,30 @@
     <script src="spec-helper.js"></script>
 
     <!-- include source files here... -->
-    <script src="bower_components/jsep/build/jsep.min.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/bootstrap-submenu/dist/js/bootstrap-submenu.js"></script>
+    <script src="bower_components/handsontable/dist/handsontable.full.js"></script>
+    <script src="bower_components/jsep/build/jsep.min.js"></script>
     <script src="bower_components/excelFormulaUtilitiesJS/excelFormulaUtilities-0.9.43.min.js"></script>
-    <script src="scripts/spreadsheet.js"></script>
+
+    <!-- build:js({app,.tmp}) scripts/main.js -->
+    <script src="scripts/helpers.js"></script>
 
     <script src="scripts/toggle-class.js"></script>
+    <script src="scripts/actions.js"></script>
+    <script src="scripts/handsontable-toolbar.js"></script>
+
+    <script src="scripts/formulas-auto-fill.js"></script>
+    <script src="scripts/spreadsheet-editor.js"></script>
+    <script src="scripts/spreadsheet.js"></script>
 
     <!-- include spec files here... -->
     <script src="spec/test.js"></script>
+    <script src="spec/helpers-spec.js"></script>
     <script src="spec/toggle-class-spec.js"></script>
     <script src="spec/spreadsheet-spec.js"></script>
+
 
     <script>mocha.run()</script>
 </body>

@@ -105,40 +105,6 @@
         });
     });
 
-    describe('convertStringToCoords()', function(){
-        it('returns an object with properties row and col', function(){
-            var coords = convertStringToCoords('A1');
-            coords.should.have.property('row');
-            coords.should.have.property('col');
-        });
-
-        it('computes the right column with strings with one letter', function() {
-            var coords = convertStringToCoords('A1');
-            coords.col.should.be.equal(0);
-        });
-
-        it('computes the right column with strings with two letters', function() {
-            var coords = convertStringToCoords('AA1');
-            coords.col.should.be.equal(26);
-        });
-
-        it('computes the right column with strings with two different letters', function() {
-            var coords = convertStringToCoords('BD1');
-            coords.col.should.be.equal(55);
-        });
-
-        it('computes the right row with strings bigger second coordnate', function() {
-            var coords = convertStringToCoords('BD32');
-            coords.row.should.be.equal(31);
-        });
-
-        it('returns null is the row is not greater that 0', function() {
-            var coords = convertStringToCoords('A0');
-            expect(coords).to.be.null;
-        });
-    });
-
-
     describe('isInArray()', function(){
 
         var coords = {row : 1, col: 1};

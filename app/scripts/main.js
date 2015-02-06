@@ -4,15 +4,14 @@ $(function() {
     /* Activate Bootstrap's submenu plugin */
     $('.dropdown-submenu > a').submenupicker();
 
-    var spreadsheetToolbar = $('#spreadsheet-one-toolbar');
-
     /* Instantiate "toolbar" for controlling the Handsontable instance */
+    var spreadsheetToolbar = $('#spreadsheet-one-toolbar');
     var htToolbar = new HandsontableToolbar(spreadsheetToolbar[0]);
+
     var numberOfSpreadsheets = 0;
 
-    var plusTab = $('#js-plus-tab');
-
     /* TODO: Add the ability to remove a tab */
+    var plusTab = $('#js-plus-tab');
     plusTab.on('click', function() {
         var index = ++numberOfSpreadsheets;
         var spreadsheetId = 'spreadsheet-' + index;
@@ -31,7 +30,7 @@ $(function() {
 
 });
 
-function createHandsontableSpreadsheet(id, parentSpreadsheet) {
+function createHandsontableSpreadsheet(id) {
     'use strict';
 
     var newSpreadsheet = $('#spreadsheet-hidden').clone();
@@ -44,8 +43,6 @@ function createHandsontableSpreadsheet(id, parentSpreadsheet) {
     $('#tab-content div').removeClass('active');
     $('#tab-content').append(newSpreadsheet);
 
-    var spreadsheetObj = new Spreadsheet(50, 28, parentSpreadsheet);
-
     var ht = new Handsontable(newSpreadsheet[0], {
         autoColumnSize: false,
         startRows: 50,
@@ -56,8 +53,9 @@ function createHandsontableSpreadsheet(id, parentSpreadsheet) {
         outsideClickDeselects: false,
         comments: true
     });
-    ht.updateSettings({ editor: getSpreadsheetEditor(spreadsheetObj, ht, id) });
-
+    ht.spreadsheet =  new Spreadsheet(ht.countRows(), ht.countCols());
+    ht.updateSettings({ editor: getSpreadsheetEditor(ht) });
+    ht.addHook('beforeAutofillInsidePopulate', beforeAutofillInsidePopulate);
     ht.selectCell(0, 0);
 
     return ht;

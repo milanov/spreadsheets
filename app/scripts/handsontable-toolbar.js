@@ -15,7 +15,7 @@ function HandsontableToolbar(toolbar) {
 }
 
 HandsontableToolbar.prototype.initToolbarForInstance = function(instance) {
-    'use srtict';
+    'use strict';
 
     this.setInstance(instance);
 
@@ -34,7 +34,7 @@ HandsontableToolbar.prototype.initToolbarForInstance = function(instance) {
         });
 
         this.render();
-    })
+    });
 
     this.setFormatter('bold');
     this.setFormatter('italic');
@@ -74,13 +74,13 @@ HandsontableToolbar.prototype.initToolbarForInstance = function(instance) {
             'ht-justify'
     ]);
 
-}
+};
 
 HandsontableToolbar.prototype.setInstance = function(instance) {
     'use strict';
 
     this._instance = instance;
-}
+};
 
 HandsontableToolbar.prototype.setAction = function(name, action) {
     'use strict';
