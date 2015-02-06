@@ -120,22 +120,20 @@
               <a class="dropdown-toggle" id="format-dropdown-menu" data-toggle="dropdown" aria-expanded="false">Format</a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="format-dropdown-menu">
                 <li class="dropdown-submenu">
-                  <a href="#" data-toggle="dropdown">Number</a>
+                  <a tabindex="0" data-toggle="dropdown">Number</a>
                   <ul class="dropdown-menu">
-                    <li>Automatic</li>
-                    <li>Plain text</li>
+                    <li><a tabindex="0" data-edit-action="format-as-number" data-edit-argument="plain-text">Plain text</a></li>
                     <li role="presentation" class="divider"></li>
-                    <li><a tabindex="0" data-edit-action="format-as-number">Number</a></li>
-                    <li><a tabindex="0" data-edit-action="format-as-percent">Percent</a></li>
-                    <li>Scientific</li>
+                    <li><a tabindex="0" data-edit-action="format-as-number" data-edit-argument="number">Number</a></li>
+                    <li><a tabindex="0" data-edit-action="format-as-number" data-edit-argument="percent">Percent</a></li>
                     <li role="presentation" class="divider"></li>
-                    <li>Financial</li>
-                    <li>Currency</li>
+                    <li><a tabindex="0" data-edit-action="format-as-number" data-edit-argument="financial">Financial</a></li>
+                    <li><a tabindex="0" data-edit-action="format-as-number" data-edit-argument="currency">Currency</a></li>
                     <li role="presentation" class="divider"></li>
-                    <li>Date</li>
-                    <li>Time</li>
-                    <li>Date time</li>
-                    <li>Duration</li>
+                    <li><a tabindex="0" data-edit-action="format-as-date" data-edit-argument="date">Date</a></li>
+                    <li><a tabindex="0" data-edit-action="format-as-date" data-edit-argument="time">Time</a></li>
+                    <li><a tabindex="0" data-edit-action="format-as-date" data-edit-argument="date-time">Date time</a></li>
+                    <li><a tabindex="0" data-edit-action="format-as-date" data-edit-argument="duration">Duration</a></li>
                   </ul>
                 </li>
                 <li role="presentation" class="divider"></li>
@@ -239,9 +237,23 @@
         <li><a href="#" class="btn btn-small">
           <i class="fa fa-percent"></i>
         </a></li>
-        <li><a href="#" class="btn btn-small">
-          <i class="fa fa-numbers"></i>
-        </a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" id="number-format-dropdown-menu" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-numbers"></i>&nbsp;<i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="number-format-dropdown-menu">
+            <li><a tabindex="0" data-edit-action="format-as-number" data-edit-argument="plain-text">Plain text</a></li>
+            <li role="presentation" class="divider"></li>
+            <li><a tabindex="0" data-edit-action="format-as-number" data-edit-argument="number">Number</a></li>
+            <li><a tabindex="0" data-edit-action="format-as-number" data-edit-argument="percent">Percent</a></li>
+            <li role="presentation" class="divider"></li>
+            <li><a tabindex="0" data-edit-action="format-as-number" data-edit-argument="financial">Financial</a></li>
+            <li><a tabindex="0" data-edit-action="format-as-number" data-edit-argument="currency">Currency</a></li>
+            <li role="presentation" class="divider"></li>
+            <li><a tabindex="0" data-edit-action="format-as-date" data-edit-argument="date">Date</a></li>
+            <li><a tabindex="0" data-edit-action="format-as-date" data-edit-argument="time">Time</a></li>
+            <li><a tabindex="0" data-edit-action="format-as-date" data-edit-argument="date-time">Date time</a></li>
+            <li><a tabindex="0" data-edit-action="format-as-date" data-edit-argument="duration">Duration</a></li>
+          </ul>
+        </li>
         <li class="divider-vertical"></li>
 
         <li class="dropdown">

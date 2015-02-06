@@ -36,6 +36,40 @@ HandsontableToolbar.prototype.initToolbarForInstance = function(instance) {
         this.render();
     });
 
+    this.setAction('format-as-number', {
+        callback: function(type) {
+            var instance = this,
+                renderer = 'numeric',
+                format = '';
+
+            switch(type) {
+                case 'number':
+                    format = '0,0.0';
+                    break;
+                case 'percent':
+                    format = '0%';
+                    break;
+                case 'financial':
+                    format = '(0,0.0)';
+                    break;
+                case 'currency':
+                    format = '$0,0.0';
+                    break;
+                default:
+                    renderer = 'text';
+            }
+
+
+            this.getSelectedRange().forAll(function(row, col) {
+                instance.setCellMeta(row, col, 'renderer', renderer);
+                instance.setCellMeta(row, col, 'format', format);
+            });
+
+            this.render();
+        },
+        disabled: false
+    });
+
     this.setFormatter('bold');
     this.setFormatter('italic');
     this.setFormatter('strikethrough');
