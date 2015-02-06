@@ -51,11 +51,12 @@ function createHandsontableSpreadsheet(id) {
         colHeaders: true,
         contextMenu: true,
         outsideClickDeselects: false,
-        comments: true
+        comments: true,
+        editor: 'formula'
     });
     ht.spreadsheet =  new Spreadsheet(ht.countRows(), ht.countCols());
-    ht.updateSettings({ editor: getSpreadsheetEditor(ht) });
     ht.addHook('beforeAutofillInsidePopulate', beforeAutofillInsidePopulate);
+
     ht.selectCell(0, 0);
 
     return ht;
