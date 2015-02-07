@@ -15,15 +15,15 @@ function SpreadsheetManager() {
     this.setCurrentHandsontable = function(handsontable) {
         this._currentHandsontable = handsontable;
         this.setCurrentSpreadsheet(this._currentHandsontable.spreadsheet);
-    }
+    };
 
     this.setCurrentSpreadsheet = function(spreadsheet) {
         this._currentSpreadsheet = spreadsheet;
-    }
+    };
 
     this.getNextId = function() {
         return ++this._numberOfSpreadsheets;
-    }
+    };
 
     this.setUpdateUICallback = function(toolbar) {
 
@@ -52,8 +52,7 @@ function SpreadsheetManager() {
                 selected.getWidth() * selected.getHeight());
             toolbar.updateUI(commonClasses);
         });
-
-    }
+    };
 
     this.createHandsontableSpreadsheet = function(id, toolbar) {
         'use strict';
@@ -81,6 +80,22 @@ function SpreadsheetManager() {
         });
         ht.spreadsheet =  new Spreadsheet(ht.countRows(), ht.countCols());
         ht.addHook('beforeAutofillInsidePopulate', beforeAutofillInsidePopulate);
+
+        ht.addHook('afterCreateRow', function(index, amount) {
+            ht.spreadsheet.insertRow(index, ht.setDataAtCell);
+        });
+
+        ht.addHook('afterCreateCol', function(index, amount) {
+            ht.spreadsheet.insertColumn(index, ht.setDataAtCell);
+        });
+
+        ht.addHook('afterRemoveRow', function(index, amount) {
+            ht.spreadsheet.removeRow(index, ht.setDataAtCell);
+        });
+
+        ht.addHook('afterRemoveCol', function(index, amount) {
+            ht.spreadsheet.removeColumn(index, ht.setDataAtCell);
+        });
 
         ht.selectCell(0, 0);
 

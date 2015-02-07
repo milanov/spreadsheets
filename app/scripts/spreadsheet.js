@@ -3,12 +3,14 @@ function Spreadsheet(rows, cols, storage) {
 
     var referenceError = '#REF!';
     var table = {};
+    this._rows = rows;
+    this._cols = cols;
 
     for (var i = 0; i < rows; i++) {
         table[i] = {};
         for (var j = 0; j < cols; j++) {
             table[i][j] = {
-                value: null,
+                value: undefined,
                 formula: '',
                 affects: [],
                 dependsOn: []
@@ -17,10 +19,9 @@ function Spreadsheet(rows, cols, storage) {
     }
 
     this.recomputeAll = function(callback) {
-        for (var i = 0; i < rows; i++) {
-            for (var j = 0; j < cols; j++) {
-
-                if (table[i][j].value === null) {
+        for (var i = 0; i < this._rows; i++) {
+            for (var j = 0; j < this._cols; j++) {
+                if (this.getCellFormula(i, j) !== '') {
                     this.recompute(i, j, callback);
                 }
             }
@@ -43,7 +44,7 @@ function Spreadsheet(rows, cols, storage) {
         table[row][col].value = value;
         var that = this;
         // Change the value of all cells that depend on this one
-        $.each(table[row][col].affects, function (index, value) {
+        table[row][col].affects.forEach(function (value) {
             that.recompute(value.row, value.col, callback);
         });
     };
@@ -54,7 +55,7 @@ function Spreadsheet(rows, cols, storage) {
 
     this.setCellFormula = function(row, col, value, callback) {
 
-        $.each(table[row][col].dependsOn, function (index, value) {
+        table[row][col].dependsOn.forEach(function (value) {
             var result = table[value.row][value.col].affects.filter(
                 function( obj ) {
                     return obj.row !== row || obj.col !== col;
@@ -73,9 +74,88 @@ function Spreadsheet(rows, cols, storage) {
 
         var that = this;
         /* Change the value of all cells that depend on this one */
-        $.each(table[row][col].affects, function (index, value) {
+        table[row][col].affects.forEach(function (value) {
             that.recompute(value.row, value.col, callback);
         });
+    };
+
+    this.insertRow = function(row, callback) {
+        if (row < this._rows) {
+
+            /* Move the rows below the new one*/
+            table[this._rows] = {};
+            for (var i = this._rows; i > row; i--) {
+                for (var j = 0; j < this._cols; j++) {
+                    table[i][j] = table[i - 1][j];
+                }
+            }
+
+            /* Fill the new row with empty cells */
+            for (var j = 0; j < this._cols; j++) {
+                table[row][j] = {
+                    value: undefined,
+                    formula: '',
+                    affects: [],
+                    dependsOn: []
+                };
+            }
+
+            this._rows++;
+            this.recomputeAll(callback);
+        }
+    };
+
+    this.removeRow = function(row, callback) {
+        if (row < this._rows) {
+            /* Move the rows below the new one*/
+            table[this._rows] = {};
+            for (var i = row; i < this._rows - 1; i++) {
+                for (var j = 0; j < this._cols; j++) {
+                    table[i][j] = table[i + 1][j];
+                }
+            }
+            this._rows--;
+            this.recomputeAll(callback);
+        }
+    };
+
+    this.insertColumn = function(col, callback) {
+        if (col < this._cols) {
+            /* Move the cols on the right side */
+            for (var i = 0; i < this._rows; i++) {
+                for (var j = this._cols; j > col; j--) {
+                    table[i][j] = table[i][j - 1];
+                }
+            }
+
+            /* Fill the new column with empty cells */
+            for (var j = 0; j < this._rows; j++) {
+                table[j][col] = {
+                    value: undefined,
+                    formula: '',
+                    affects: [],
+                    dependsOn: []
+                };
+            }
+
+            this._cols++;
+            this.recomputeAll(callback);
+        }
+    };
+
+    this.removeColumn = function(col, callback) {
+        if (col < this._cols) {
+
+            /* Move the cols on the right side */
+            for (var i = 0; i < this._rows; i++) {
+                for (var j = col; j < this._cols - 1; j++) {
+                    table[i][j] = table[i][j + 1];
+                }
+            }
+
+            this._cols--;
+            this.recomputeAll(callback);
+        }
     };
 
     var binops = {
@@ -109,7 +189,7 @@ function Spreadsheet(rows, cols, storage) {
                 table[row][col].dependsOn.push(coords);
             }
 
-            $.each(table[coords.row][coords.col].dependsOn, function (index, value) {
+            table[coords.row][coords.col].dependsOn.forEach(function (value) {
                 if (!isInArray(value, table[row][col].dependsOn)) {
                     table[row][col].dependsOn.push(value);
                 } 
@@ -135,7 +215,7 @@ function Spreadsheet(rows, cols, storage) {
                 table[coords.row][coords.col].affects.push(currentCell);
             }
 
-            $.each(table[row][col].affects, function (index, value) {
+            table[row][col].affects.forEach(function (value) {
                 if (!isInArray(value, table[coords.row][coords.col].affects)) {
                     table[coords.row][coords.col].affects.push(value);
                 }
@@ -143,7 +223,7 @@ function Spreadsheet(rows, cols, storage) {
 
             var result = this.getCellValue(coords.row, coords.col);
 
-            if (result === null) {
+            if (result === undefined) {
                 /* We haven't computed the cell's value yet */
                 this.recompute(coords.row, coords.col, callback);
                 result = this.getCellValue(coords.row, coords.col);
@@ -161,7 +241,6 @@ function Spreadsheet(rows, cols, storage) {
     };
 
     this.recompute = function(row, col, callback) {
-
         var value = this.getCellFormula(row, col);
         var evaluatedValue = value;
         if (value.charAt(0) === '=') {
