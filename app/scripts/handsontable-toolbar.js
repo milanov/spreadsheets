@@ -1,5 +1,5 @@
 
-function HandsontableToolbar(toolbar) {
+function HandsontableToolbar(toolbar, spreadsheetManager) {
     'use strict';
 
     var that = this;
@@ -131,7 +131,8 @@ function HandsontableToolbar(toolbar) {
             that.updateUIElement(action, argument);
         }
 
-        that._actionHandlers[action].callback.call(that._instance, argument);
+        that._actionHandlers[action].callback.call(
+            spreadsheetManager.getCurrentHandsontable(), argument);
     });
 }
 
@@ -218,12 +219,6 @@ HandsontableToolbar.prototype.getUIElement = function(action, argument) {
 HandsontableToolbar.prototype.isElementDropdown = function(action, argument) {
     return argument && action !== argument;
 }
-
-HandsontableToolbar.prototype.setInstance = function(instance) {
-    'use strict';
-
-    this._instance = instance;
-};
 
 HandsontableToolbar.prototype.setAction = function(name, action) {
     'use strict';
