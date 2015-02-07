@@ -50,3 +50,15 @@ function isFormula(literal) {
 function wordsIn(str) {
     return str.match(/\S+/g) || [];
 }
+
+function filterCommonClasses(classes, count) {
+    var filtered = [];
+
+    for (var classElement in classes) {
+        if (classes[classElement] === count) {
+            filtered.push(classElement);
+        }
+    }
+
+    return filtered;
+}
