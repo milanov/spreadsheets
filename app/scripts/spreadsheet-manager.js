@@ -1,29 +1,16 @@
 function SpreadsheetManager() {
 
     this._currentHandsontable;
-    this._currentSpreadsheet;
+    this._instances = {};
     this._numberOfSpreadsheets = 0;
 
-    this.getCurrentHandsontable = function() {
+    this.getActiveSheet = function() {
         return this._currentHandsontable;
     };
 
-    this.getCurrentSpreadsheet = function() {
-        return this._currentSpreadsheet;
-    };
-
-    this.setCurrentHandsontable = function(handsontable) {
-        this._currentHandsontable = handsontable;
-        this.setCurrentSpreadsheet(this._currentHandsontable.spreadsheet);
-    };
-
-    this.setCurrentSpreadsheet = function(spreadsheet) {
-        this._currentSpreadsheet = spreadsheet;
-    };
-
-    this.getNextId = function() {
-        return ++this._numberOfSpreadsheets;
-    };
+    this.setActiveSheet = function(sheetId) {
+        this._currentHandsontable = this._instances[sheetId];
+    }
 
     this.setUpdateUICallback = function(toolbar) {
 
@@ -54,20 +41,10 @@ function SpreadsheetManager() {
         });
     };
 
-    this.createHandsontableSpreadsheet = function(id, toolbar) {
+    this.createHandsontableSpreadsheet = function(holder, toolbar) {
         'use strict';
 
-        var newSpreadsheet = $('#spreadsheet-hidden').clone();
-        newSpreadsheet.attr('id', id);
-        newSpreadsheet.removeClass('hidden');
-
-        var calculatedSpreadsheetHeight = $(window).height() - $('header').height() - $('footer').height();
-        newSpreadsheet.height(calculatedSpreadsheetHeight);
-
-        $('#tab-content div').removeClass('active');
-        $('#tab-content').append(newSpreadsheet);
-
-        var ht = new Handsontable(newSpreadsheet[0], {
+        var ht = new Handsontable(holder, {
             autoColumnSize: false,
             startRows: 50,
             startCols: 28,
@@ -99,9 +76,10 @@ function SpreadsheetManager() {
 
         ht.selectCell(0, 0);
 
-        this.setCurrentHandsontable(ht);
+        this._currentHandsontable = ht;
         this.setUpdateUICallback(toolbar);
+        this._instances[++this._numberOfSpreadsheets] = ht;
 
-        return ht;
+        return this._numberOfSpreadsheets;
     };
 }

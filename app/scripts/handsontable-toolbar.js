@@ -132,7 +132,7 @@ function HandsontableToolbar(toolbar, spreadsheetManager) {
         }
 
         that._actionHandlers[action].callback.call(
-            spreadsheetManager.getCurrentHandsontable(), argument);
+            spreadsheetManager.getActiveSheet(), argument);
     });
 }
 

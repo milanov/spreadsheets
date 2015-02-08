@@ -92,17 +92,18 @@
               selection = this.getSelectedRange();
 
             var topLeft = selection.getTopLeftCorner(),
-                bottomRight = selection.getBottomRightCorner();
+                bottomRight = selection.getBottomRightCorner(),
+                cellValue;
 
             if (selection.isSingle()) {
-                var cellValue = '=' + functionName.toUpperCase() + '()';
+                cellValue = '=' + functionName.toUpperCase() + '()';
                 this.getActiveEditor().beginEditing(cellValue);
                 return;
             }
 
             var startCellCoord = this.getColHeader(topLeft.col) + this.getRowHeader(topLeft.row);
             var endCellCoord = this.getColHeader(bottomRight.col) + this.getRowHeader(bottomRight.row);
-            var cellValue = '=' + functionName.toUpperCase() + '(' + startCellCoord + ':' + endCellCoord +')';
+            cellValue = '=' + functionName.toUpperCase() + '(' + startCellCoord + ':' + endCellCoord +')';
             var rowToInsertFormulaIn = (bottomRight.row + 1) === totalRowsCount ? topLeft.row - 1 : bottomRight.row + 1;
 
             this.selectCell(rowToInsertFormulaIn, topLeft.col);

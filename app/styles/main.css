@@ -75,3 +75,8 @@ border-top-color: transparent;
 #top-menu a.active::after { 
     content: " ✔";
 }
+
+.nav-tabs > li .close {
+    margin: 0 0 0 6px;
+    font-size: 18px;
+}
