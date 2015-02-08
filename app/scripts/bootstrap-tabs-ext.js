@@ -46,7 +46,9 @@
         var self = this;
 
         // whenever a tab is clicked this method will be called
-        this.$ul.on('click', 'a.tab', function () {
+        this.$ul.on('click', 'a.tab', function (e) {
+            if (e.target.tagName.toLowerCase() !== 'a') return;
+
             var tabContentId = $(this).attr('href'),
                 tabId = getOriginalTabId(tabContentId);
 
@@ -62,7 +64,7 @@
         });
 
         // whenever a close tab button is clicked this method will be called
-        this.$ul.on('click', '.closeTab', function() {
+        this.$ul.on('click', '.closeTab', function(e) {
             var closingTab = $(this).parent(),
                 tabContentId = closingTab.attr('href'),
                 tabId = getOriginalTabId(tabContentId);
