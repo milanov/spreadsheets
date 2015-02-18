@@ -163,21 +163,61 @@ function Spreadsheet(rows, cols, storage) {
         '-' : function(a, b) { return a - b; },
         '*' : function(a, b) { return a * b; },
         '/' : function(a, b) { return a / b; },
-        '%' : function(a, b) { return a % b; }
+        '%' : function(a, b) { return a % b; },
+        '>' : function(a, b) { return a > b; },
+        '<' : function(a, b) { return a < b; },
+        '<=' : function(a, b) { return a <= b; },
+        '>=' : function(a, b) { return a >= b; },
+        '===' : function(a, b) { return a === b; },
+        '<>' : function(a, b) { return a !== b; }
     };
     var unops = {
         '-' : function(a) { return -a; },
         '+' : function(a) { return a; }
     };
 
-    this.doEval = function(row, col, node, callback) {
+    this.doEval = function(row, col, node, callback, isGroupingFormula) {
 
-        if(node.type === 'BinaryExpression') {
+        if(node.type === 'CallExpression') {
+            console.log("In callExpression");
+
+            var callee = node.callee;
+            var parameters = [];
+
+            for(var index in node.arguments) {
+                var argument = node.arguments[index];
+                var result = this.doEval(row, col, argument, callback, true);
+                parameters.push(result);
+            }
+
+            if (callee.property) {
+                return Formulas[callee.property.name.toLowerCase()](parameters);
+            }
+
+            return Formulas[callee.name.toLowerCase()](parameters);
+
+        } else if (node.type === 'ArrayExpression') {
+            console.log("In arrayExpression");
+            var result = [];
+            for(var index in node.elements) {
+                var argument = node.elements[index];
+                result.push(this.doEval(row, col, argument, callback, isGroupingFormula));
+            }
+            return result;
+
+        } else if (node.type === 'ConditionalExpression') {
+            console.log("In conditionalExpression");
+            if(node.test) {
+                return doEval(row, col, node.consequent, callback, isGroupingFormula);
+            }
+            return doEval(row, col, node.alternate, callback, isGroupingFormula);
+
+        } else if(node.type === 'BinaryExpression') {
             return binops[node.operator](
-                this.doEval(row, col, node.left, callback),
-                this.doEval(row, col, node.right, callback));
+                this.doEval(row, col, node.left, callback, isGroupingFormula),
+                this.doEval(row, col, node.right, callback, isGroupingFormula));
         } else if(node.type === 'UnaryExpression') {
-            return unops[node.operator](this.doEval(row, col, node.argument, callback));
+            return unops[node.operator](this.doEval(row, col, node.argument, callback, isGroupingFormula));
         } else if(node.type === 'Literal') {
             return node.value;
         } else if (node.type === 'Identifier') { // and node.name is in table
@@ -236,7 +276,14 @@ function Spreadsheet(rows, cols, storage) {
                 throw new Error(referenceError);
             }
 
-            return result === '' ? 0 : parseFloat(result);
+            if (result === '') {
+                if (isGroupingFormula)
+                    return undefined;
+                return 0;
+            }
+
+
+            return isNaN(result) ? result : parseFloat(result);
         }
     };
 
@@ -253,10 +300,11 @@ function Spreadsheet(rows, cols, storage) {
                    so it can be passed to 'excelFormulaUtilities'.
                    After that we unwrap the result before pass it to jsep */
                 var jsFormula = excelFormulaUtilities.formula2JavaScript('DUMMY(' + value + ')');
+
                 jsFormula = jsFormula.slice(6, -1);
 
                 try {
-                    evaluatedValue = this.doEval(row, col, jsep(jsFormula), callback);                  
+                    evaluatedValue = this.doEval(row, col, jsep(jsFormula), callback, false);                  
                 } catch (e) {
                     if (e.message === referenceError) {
                         evaluatedValue = e.message;
@@ -264,6 +312,7 @@ function Spreadsheet(rows, cols, storage) {
                 }
             }
         }
+
         /* Update the value with the newly evaluated one */
         this.setCellValue(row, col, evaluatedValue, callback);
         if (callback) {
