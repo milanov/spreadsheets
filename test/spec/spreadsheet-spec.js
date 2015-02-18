@@ -35,7 +35,7 @@
                 spreadsheet.setCellFormula(0, 0, '=A3');
                 spreadsheet.getCellDependsOn(0, 0).should.eql([{row: 2, col: 0}]);
             });
-        }); 
+        });
 
         describe('setCellValue()', function() {
             it('correctly changes the cell\'s value', function(){
@@ -101,6 +101,50 @@
                     spreadsheet.doEval(2, 0, jsep(formula.slice(6, -1)));
                 }
                 expect(errorAction).to.throw(referenceError);
+            });
+            it('computes correctly the sum of multiple cells', function(){
+                spreadsheet.setCellFormula(0, 0, '=1');
+                spreadsheet.setCellFormula(1, 0, '=2');
+                var formula = excelFormulaUtilities.formula2JavaScript('DUMMY(SUM(A1:A2))');
+
+                spreadsheet.doEval(2, 0, jsep(formula.slice(6, -1))).should.equal(3);
+            });
+            it('computes correctly the maximum from multiple cells', function(){
+                spreadsheet.setCellFormula(0, 0, '=1');
+                spreadsheet.setCellFormula(1, 0, '=2');
+                var formula = excelFormulaUtilities.formula2JavaScript('DUMMY(MAX(A1:A2))');
+                spreadsheet.doEval(2, 0, jsep(formula.slice(6, -1))).should.equal(2);
+
+            });
+            it('computes correctly the minimum from multiple cells', function(){
+                spreadsheet.setCellFormula(0, 0, '=1');
+                spreadsheet.setCellFormula(1, 0, '=2');
+                var formula = excelFormulaUtilities.formula2JavaScript('DUMMY(MIN(A1:A2))');
+                spreadsheet.doEval(2, 0, jsep(formula.slice(6, -1))).should.equal(1);
+            });
+
+            it('computes correctly the minimum from multiple cells when the are not all set', function(){
+                spreadsheet.setCellFormula(1, 0, '=2');
+                var formula = excelFormulaUtilities.formula2JavaScript('DUMMY(MIN(A1:A2))');
+                spreadsheet.doEval(2, 0, jsep(formula.slice(6, -1))).should.equal(2);
+            });
+            it('returns 0 as a result of the product of unset range', function(){
+                var formula = excelFormulaUtilities.formula2JavaScript('DUMMY(PRODUCT(A1:D1)');
+                spreadsheet.doEval(2, 0, jsep(formula.slice(6, -1))).should.equal(0);
+            });
+            it('computes correctly the product when only a part of the range is set', function(){
+                spreadsheet.setCellFormula(0, 2, '=2');
+                var formula = excelFormulaUtilities.formula2JavaScript('DUMMY(PRODUCT(A1:D1)');
+                spreadsheet.doEval(2, 0, jsep(formula.slice(6, -1))).should.equal(2);
+            });
+            it('find the right number of set cells when using COUNT', function(){
+                spreadsheet.setCellFormula(0, 2, '=2');
+                var formula = excelFormulaUtilities.formula2JavaScript('DUMMY(COUNT(A1:D1)');
+                spreadsheet.doEval(2, 0, jsep(formula.slice(6, -1))).should.equal(1);
+            });
+            it('find the right number of set cells when using COUNT', function(){
+                var formula = excelFormulaUtilities.formula2JavaScript('DUMMY(COUNT(A1:D1)');
+                spreadsheet.doEval(2, 0, jsep(formula.slice(6, -1))).should.equal(0);
             });
         });
         
